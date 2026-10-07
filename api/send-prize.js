@@ -1,7 +1,7 @@
 const { Resend } = require("resend");
 
 const DEFAULT_FROM = "Pingu Quiz <onboarding@resend.dev>";
-const DEFAULT_TO = "HamzahSKhan9@gmail.com";
+const DEFAULT_TO = "hamzahskhan9@gmail.com";
 
 function cleanEnv(value) {
   return String(value || "")
@@ -11,7 +11,7 @@ function cleanEnv(value) {
 }
 
 function normalizeEmail(value, fallback) {
-  const email = cleanEnv(value);
+  const email = cleanEnv(value).toLowerCase();
   return /^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(email) ? email : fallback;
 }
 
