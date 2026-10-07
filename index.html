@@ -545,12 +545,25 @@
     .prize.chosen .prize-title { color: #145c32; }
 
     .prize-claim {
-      margin: 4px 0 8px;
+      margin: 4px 0 4px;
       text-align: center;
       font-weight: 700;
       line-height: 1.4;
       color: #2a6b40;
     }
+
+    .prize-mail {
+      margin: 0 0 8px;
+      min-height: 1.3em;
+      text-align: center;
+      font-size: 0.92rem;
+      font-weight: 600;
+      line-height: 1.35;
+      color: var(--muted);
+    }
+
+    .prize-mail.ok { color: #2a6b40; }
+    .prize-mail.err { color: #8a4e3a; }
 
     @media (hover: hover) {
       .prize:hover { border-color: #d4bc78; }
@@ -704,6 +717,7 @@
       <p class="end-msg" id="end-msg"></p>
       <div class="prize-menu" id="prize-menu" hidden></div>
       <p class="prize-claim" id="prize-claim" hidden></p>
+      <p class="prize-mail" id="prize-mail" hidden></p>
       <p class="signoff">love, Bingu</p>
       <button class="primary" id="again-btn" type="button">Play Again</button>
     </section>
@@ -876,6 +890,8 @@
     const endMsg = document.getElementById("end-msg");
     const prizeMenu = document.getElementById("prize-menu");
     const prizeClaim = document.getElementById("prize-claim");
+    const prizeMail = document.getElementById("prize-mail");
+    let mailRequest = 0;
     const prizeGroups = [
       {
         label: "Sweet & Romantic",
@@ -1031,6 +1047,7 @@
       prizeMenu.innerHTML = "";
       prizeClaim.hidden = true;
       prizeClaim.textContent = "";
+      setMailStatus("", "");
       prizeGroups.forEach((group, index) => {
         const groupEl = document.createElement("div");
         groupEl.className = "prize-group";
@@ -1068,7 +1085,7 @@
           copy.className = "prize-copy";
           copy.textContent = prize[1];
           btn.append(title, copy);
-          btn.addEventListener("click", () => choosePrize(btn, prize[0]));
+          btn.addEventListener("click", () => choosePrize(btn, prize[0], group.label));
           panel.appendChild(btn);
         });
         toggle.addEventListener("click", () => {
@@ -1081,7 +1098,39 @@
       });
     }
 
-    function choosePrize(btn, title) {
+    function setMailStatus(kind, text) {
+      prizeMail.hidden = !text;
+      prizeMail.className = "prize-mail" + (kind ? " " + kind : "");
+      prizeMail.textContent = text || "";
+    }
+
+    async function notifyPrize(title, category) {
+      const requestId = ++mailRequest;
+      setMailStatus("", "Telling Bingu...");
+      try {
+        const response = await fetch("/api/send-prize", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            prizeTitle: title,
+            category,
+            score,
+            total: questions.length
+          })
+        });
+        const data = await response.json().catch(() => ({}));
+        if (requestId !== mailRequest) return;
+        if (!response.ok) {
+          throw new Error(data.error || "Could not send email");
+        }
+        setMailStatus("ok", "Bingu has been notified ⚡");
+      } catch (err) {
+        if (requestId !== mailRequest) return;
+        setMailStatus("err", "Couldn't email Bingu. Screenshot this page for him 😌");
+      }
+    }
+
+    function choosePrize(btn, title, category) {
       prizeMenu.querySelectorAll(".prize").forEach((el) => {
         el.classList.remove("chosen");
         el.setAttribute("aria-pressed", "false");
@@ -1096,6 +1145,7 @@
       prizeClaim.textContent = title + ". It's yours.";
       const rect = btn.getBoundingClientRect();
       sparkle(rect.left + rect.width / 2, rect.top + rect.height / 3);
+      notifyPrize(title, category);
     }
 
     function countTo(n) {
@@ -1122,6 +1172,9 @@
         : "No prize this time... but you're still my favourite person. Try again? 😌";
       scoreNum.textContent = "0";
       prizeMenu.hidden = !won;
+      prizeClaim.hidden = true;
+      prizeClaim.textContent = "";
+      setMailStatus("", "");
       if (won) renderPrizes();
       ring.style.transition = "none";
       ring.style.strokeDashoffset = String(CIRC);

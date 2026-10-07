@@ -1,0 +1,9 @@
+{
+  "name": "pingu-quiz",
+  "private": true,
+  "version": "1.0.0",
+  "description": "How Well Do You Know Your Bingu?",
+  "dependencies": {
+    "resend": "^4.0.0"
+  }
+}
