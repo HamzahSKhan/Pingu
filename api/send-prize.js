@@ -1,7 +1,29 @@
 const { Resend } = require("resend");
 
-const TO_EMAIL = process.env.PRIZE_NOTIFY_EMAIL || "HamzahSKhan9@gmail.com";
-const FROM_EMAIL = process.env.RESEND_FROM || "Pingu Quiz <onboarding@resend.dev>";
+const DEFAULT_FROM = "Pingu Quiz <onboarding@resend.dev>";
+const DEFAULT_TO = "HamzahSKhan9@gmail.com";
+
+function cleanEnv(value) {
+  return String(value || "")
+    .trim()
+    .replace(/^["']+|["']+$/g, "")
+    .trim();
+}
+
+function normalizeEmail(value, fallback) {
+  const email = cleanEnv(value);
+  return /^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(email) ? email : fallback;
+}
+
+function normalizeFrom(value) {
+  const from = cleanEnv(value) || DEFAULT_FROM;
+  const plain = /^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/;
+  const named = /^.+\s<[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+>$/;
+  return plain.test(from) || named.test(from) ? from : DEFAULT_FROM;
+}
+
+const TO_EMAIL = normalizeEmail(process.env.PRIZE_NOTIFY_EMAIL, DEFAULT_TO);
+const FROM_EMAIL = normalizeFrom(process.env.RESEND_FROM);
 
 const PRIZES = {
   "A \"Pingu's Choice\" Date":
