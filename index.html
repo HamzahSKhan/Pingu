@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#e7f0e4">
+  <title>How Well Do You Know Your Bingu?</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐧</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:wght@600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #243328;
+      --muted: #5d7264;
+      --gold: #b8923e;
+      --gold-deep: #6a5220;
+      --sage: #3f6d4c;
+      --sage-soft: #e7f3ea;
+      --cream: #fbf6ee;
+      --card: #fffaf3;
+      --line: #eadfcd;
+      --wrong: #b55252;
+      --wrong-bg: #fdeeee;
+      --right: #2c7a48;
+      --right-bg: #e5f6ea;
+      --shadow: 0 22px 50px rgba(55, 90, 64, 0.14);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { margin: 0; }
+
+    body {
+      min-height: 100dvh;
+      display: flex;
+      justify-content: center;
+      align-items: safe center;
+      padding: max(20px, env(safe-area-inset-top)) 16px max(24px, env(safe-area-inset-bottom));
+      font-family: "Quicksand", "Trebuchet MS", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse at 12% 8%, rgba(212, 176, 92, 0.28), transparent 42%),
+        radial-gradient(ellipse at 92% 88%, rgba(111, 160, 120, 0.32), transparent 46%),
+        radial-gradient(ellipse at 70% 0%, rgba(255, 250, 243, 0.9), transparent 40%),
+        linear-gradient(165deg, #f7f1e6 0%, #e5f0e4 48%, #f8f1df 100%);
+      background-size: 140% 140%;
+      animation: meadow 22s ease-in-out infinite;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection {
+      background: #f0e0b4;
+      color: var(--ink);
+    }
+
+    button {
+      font: inherit;
+      color: inherit;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    button:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 3px;
+    }
+
+    .blob, .floats { pointer-events: none; }
+
+    .blob {
+      position: fixed;
+      z-index: 0;
+      border-radius: 50%;
+      filter: blur(46px);
+    }
+
+    .blob-a {
+      width: 280px;
+      height: 280px;
+      top: -80px;
+      right: -70px;
+      background: rgba(212, 176, 92, 0.34);
+    }
+
+    .blob-b {
+      width: 360px;
+      height: 360px;
+      left: -120px;
+      bottom: -120px;
+      background: rgba(120, 168, 128, 0.32);
+    }
+
+    .floats {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .floats span {
+      position: absolute;
+      font-size: 1.55rem;
+      opacity: 0.55;
+      animation: drift 8s ease-in-out infinite;
+      user-select: none;
+    }
+
+    .floats span:nth-child(1) { left: 7%; top: 10%; }
+    .floats span:nth-child(2) { right: 9%; top: 16%; animation-delay: -1.4s; font-size: 1.35rem; }
+    .floats span:nth-child(3) { left: 10%; bottom: 14%; animation-delay: -2.2s; color: var(--gold); }
+    .floats span:nth-child(4) { right: 12%; bottom: 18%; animation-delay: -3s; }
+    .floats span:nth-child(5) { left: 46%; top: 6%; animation-delay: -2s; font-size: 1.2rem; }
+
+    .card {
+      position: relative;
+      z-index: 1;
+      width: min(440px, 100%);
+      padding: 30px 22px 24px;
+      background:
+        linear-gradient(var(--card), var(--card)) padding-box,
+        linear-gradient(150deg, #e7d39a, #fffaf3 42%, #b9d4bc) border-box;
+      border: 1.5px solid transparent;
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .card[hidden] { display: none; }
+
+    .card:not([hidden]) { animation: rise 0.55s ease; }
+
+    .mascot {
+      text-align: center;
+      font-size: 2.35rem;
+      line-height: 1;
+      animation: floaty 3.8s ease-in-out infinite;
+      filter: drop-shadow(0 8px 0 rgba(184, 146, 62, 0.12));
+    }
+
+    .eyebrow {
+      margin: 10px 0 0;
+      text-align: center;
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .title {
+      margin: 6px 0 0;
+      text-align: center;
+      color: #2a4632;
+      animation: floaty 5s ease-in-out infinite;
+    }
+
+    .title-small {
+      display: block;
+      font-family: "Dancing Script", cursive;
+      font-weight: 600;
+      font-size: clamp(1.7rem, 6.4vw, 2.2rem);
+      line-height: 1.05;
+    }
+
+    .title-big {
+      display: block;
+      margin-top: 2px;
+      font-family: "Dancing Script", cursive;
+      font-weight: 700;
+      font-size: clamp(2.9rem, 12vw, 4.35rem);
+      line-height: 0.92;
+    }
+
+    .bolt {
+      display: inline-block;
+      margin-left: 0.08em;
+      font-style: normal;
+      font-size: 0.38em;
+      vertical-align: 0.55em;
+      animation: twinkle 2.6s ease-in-out infinite;
+    }
+
+    .rule {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: 14px 0 12px;
+      color: var(--gold);
+      font-size: 0.85rem;
+    }
+
+    .rule::before,
+    .rule::after {
+      content: "";
+      width: 58px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold));
+    }
+
+    .rule::after { background: linear-gradient(90deg, var(--gold), transparent); }
+
+    .intro {
+      margin: 0;
+      text-align: center;
+      font-size: 1.08rem;
+      font-weight: 600;
+      line-height: 1.45;
+      color: #3c5144;
+    }
+
+    .hint {
+      margin: 6px 0 22px;
+      text-align: center;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    .primary {
+      display: block;
+      width: 100%;
+      border: 0;
+      border-radius: 999px;
+      padding: 15px 18px;
+      background: var(--sage);
+      color: #fffaf3;
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: 0.02em;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.28),
+        0 10px 22px rgba(63, 109, 76, 0.26);
+    }
+
+    .primary:active { transform: translateY(1px); }
+
+    @media (hover: hover) {
+      .primary:hover { background: #4c7d5b; }
+    }
+
+    .quiz-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .progress-label {
+      margin: 0;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #6d8a74;
+    }
+
+    .mini {
+      font-size: 1.35rem;
+      line-height: 1;
+      animation: floaty 3.4s ease-in-out infinite;
+    }
+
+    .bar {
+      height: 8px;
+      margin-top: 10px;
+      border-radius: 999px;
+      background: #efe4d0;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      width: 0;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #6f9a78, #c4a35a);
+      transition: width 0.45s ease;
+    }
+
+    .question {
+      margin: 18px 0 14px;
+      font-size: 1.28rem;
+      font-weight: 600;
+      line-height: 1.35;
+      color: var(--ink);
+    }
+
+    .answers {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .answer {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      padding: 13px 14px;
+      text-align: left;
+      background: #fffdf9;
+      border: 1.5px solid var(--line);
+      border-radius: 16px;
+      color: var(--ink);
+      font-weight: 600;
+      font-size: 1rem;
+      line-height: 1.35;
+      transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+    }
+
+    .answer:active:not(:disabled) { transform: scale(0.99); }
+
+    .answer:disabled { cursor: default; opacity: 1; }
+
+    .letter {
+      flex: none;
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #f4e6c4;
+      color: var(--gold-deep);
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .choice { flex: 1; }
+
+    .answer.correct {
+      background: #b7e6c9;
+      border-color: #247a42;
+      color: #0f4d28;
+      box-shadow: 0 0 0 3px rgba(36, 122, 66, 0.18);
+    }
+
+    .answer.correct .letter {
+      background: #2f8a4e;
+      color: #fffaf3;
+    }
+
+    .answer.wrong {
+      background: #f6c9c9;
+      border-color: #c04545;
+      color: #7a2424;
+    }
+
+    .answer.wrong .letter {
+      background: var(--wrong);
+      color: #fffaf3;
+    }
+
+    .answer.dim {
+      background: #f7f3ec;
+      border-color: #f0e7d8;
+      color: #b0b8b2;
+    }
+
+    .answer.dim .letter {
+      background: #f3eee4;
+      color: #c9bfae;
+    }
+
+    .answer.shake { animation: shake 0.42s ease; }
+
+    .feedback {
+      display: none;
+      margin: 14px 4px 2px;
+      text-align: center;
+      font-weight: 600;
+      line-height: 1.45;
+      text-wrap: balance;
+    }
+
+    .feedback.show { display: block; }
+
+    .feedback.good { color: #2a6b40; }
+    .feedback.bad { color: #8a4e3a; }
+
+    .q-enter { animation: qin 0.35s ease; }
+
+    .end-kicker {
+      margin: 0 0 8px;
+      text-align: center;
+      font-family: "Dancing Script", cursive;
+      font-size: 2rem;
+      color: #2f4a36;
+    }
+
+    .score-wrap {
+      position: relative;
+      width: 168px;
+      height: 168px;
+      margin: 0 auto 8px;
+    }
+
+    .score-wrap svg { width: 100%; height: 100%; display: block; }
+
+    .ring-bg,
+    .ring-fg {
+      fill: none;
+      stroke-width: 8;
+    }
+
+    .ring-bg { stroke: #efe4d0; }
+
+    .ring-fg {
+      stroke: url(#scoreGrad);
+      stroke-linecap: round;
+      stroke-dasharray: 326.73;
+      stroke-dashoffset: 326.73;
+      transform: rotate(-90deg);
+      transform-origin: 60px 60px;
+      transition: stroke-dashoffset 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .score-center {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #score-num {
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: 3.1rem;
+      font-weight: 700;
+      line-height: 0.9;
+      color: #2f4a36;
+    }
+
+    #score-of {
+      margin-top: 4px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .end-msg {
+      margin: 8px 0 4px;
+      text-align: center;
+      font-size: 1.16rem;
+      font-weight: 600;
+      line-height: 1.45;
+      color: #2a4632;
+      text-wrap: balance;
+    }
+
+    .prize-menu { margin-top: 8px; }
+    .prize-menu[hidden],
+    .prize-claim[hidden],
+    .prize-panel[hidden],
+    .prize-yours[hidden] { display: none; }
+
+    .prize-group { margin: 0 0 10px; }
+
+    .prize-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      width: 100%;
+      padding: 14px 16px;
+      border: 1.5px solid var(--line);
+      border-radius: 16px;
+      background: #fffdf9;
+      color: #6a5220;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .prize-toggle[aria-expanded="true"] {
+      border-color: #c4a35a;
+      background: #fff8ea;
+    }
+
+    .prize-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: none;
+    }
+
+    .prize-yours {
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      color: #2f8a4e;
+    }
+
+    .chev {
+      display: block;
+      width: 8px;
+      height: 8px;
+      border-right: 2px solid #b8923e;
+      border-bottom: 2px solid #b8923e;
+      transform: rotate(45deg) translateY(-2px);
+    }
+
+    .prize-toggle[aria-expanded="true"] .chev {
+      transform: rotate(225deg) translateY(-2px);
+    }
+
+    .prize-panel { padding-top: 10px; }
+
+    .prize {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+      width: 100%;
+      margin: 0 0 10px;
+      padding: 14px;
+      text-align: left;
+      background: #fffdf9;
+      border: 1.5px solid var(--line);
+      border-radius: 16px;
+      color: var(--ink);
+    }
+
+    .prize-title {
+      font-weight: 700;
+      font-size: 1.02rem;
+      line-height: 1.3;
+    }
+
+    .prize-copy {
+      font-weight: 500;
+      font-size: 0.94rem;
+      line-height: 1.45;
+      color: #3c5144;
+    }
+
+    .prize.chosen {
+      background: #e5f6ea;
+      border-color: #2f8a4e;
+      box-shadow: 0 0 0 3px rgba(47, 138, 78, 0.14);
+    }
+
+    .prize.chosen .prize-title { color: #145c32; }
+
+    .prize-claim {
+      margin: 4px 0 8px;
+      text-align: center;
+      font-weight: 700;
+      line-height: 1.4;
+      color: #2a6b40;
+    }
+
+    @media (hover: hover) {
+      .prize:hover { border-color: #d4bc78; }
+    }
+
+    .signoff {
+      margin: 4px 0 18px;
+      text-align: center;
+      font-family: "Dancing Script", cursive;
+      font-size: 1.85rem;
+      color: var(--sage);
+    }
+
+    #fx {
+      position: fixed;
+      inset: 0;
+      z-index: 5;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .spark {
+      position: absolute;
+      display: block;
+      line-height: 1;
+      animation: spark 1.4s ease-out forwards;
+    }
+
+    .spark.bit { border-radius: 2px; }
+
+    @keyframes meadow {
+      0%, 100% { background-position: 0% 40%; }
+      50% { background-position: 100% 60%; }
+    }
+
+    @keyframes floaty {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-7px); }
+    }
+
+    @keyframes drift {
+      0%, 100% { transform: translateY(0) rotate(-4deg); }
+      50% { transform: translateY(-12px) rotate(5deg); }
+    }
+
+    @keyframes twinkle {
+      0%, 100% { transform: rotate(-10deg) scale(1); opacity: 0.8; }
+      50% { transform: rotate(10deg) scale(1.16); opacity: 1; }
+    }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    @keyframes qin {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-5px); }
+      40% { transform: translateX(5px); }
+      60% { transform: translateX(-3px); }
+      80% { transform: translateX(3px); }
+    }
+
+    @keyframes spark {
+      0% { opacity: 1; transform: translate(-50%, -50%) scale(0.45) rotate(0deg); }
+      65% { opacity: 1; }
+      100% {
+        opacity: 0;
+        transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1) rotate(var(--rot));
+      }
+    }
+
+    @media (min-width: 520px) {
+      .card { padding: 36px 32px 30px; }
+    }
+
+    @media (max-width: 420px) {
+      .floats span { font-size: 1.2rem; opacity: 0.38; }
+      .question { font-size: 1.18rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="blob blob-a" aria-hidden="true"></div>
+  <div class="blob blob-b" aria-hidden="true"></div>
+  <div class="floats" aria-hidden="true">
+    <span>🐧</span>
+    <span>⚡</span>
+    <span>✦</span>
+    <span>🐧</span>
+    <span>⚡</span>
+  </div>
+
+  <main>
+    <section class="card" id="start">
+      <div class="mascot" aria-hidden="true">🐧</div>
+      <p class="eyebrow">a little quiz, just for you</p>
+      <h1 class="title">
+        <span class="title-small">How well do you know</span>
+        <span class="title-big">your Bingu?<i class="bolt" aria-hidden="true">⚡</i></span>
+      </h1>
+      <div class="rule" aria-hidden="true">✦</div>
+      <p class="intro">Think you know your Bingu?<br>Let's find out.</p>
+      <p class="hint">Twenty questions. No studying. Just us.</p>
+      <button class="primary" id="start-btn" type="button">Start Quiz</button>
+    </section>
+
+    <section class="card" id="quiz" hidden>
+      <div class="quiz-top">
+        <p class="progress-label" id="progress-label">Question 1 of 20</p>
+        <span class="mini" aria-hidden="true">🐧</span>
+      </div>
+      <div class="bar" id="bar-wrap" role="progressbar" aria-valuemin="1" aria-valuemax="20" aria-valuenow="1" aria-label="Quiz progress">
+        <div class="bar-fill" id="bar"></div>
+      </div>
+      <h2 class="question" id="question"></h2>
+      <div class="answers" id="answers"></div>
+      <p class="feedback" id="feedback" role="status"></p>
+    </section>
+
+    <section class="card" id="end" hidden>
+      <p class="end-kicker">Your score</p>
+      <div class="score-wrap">
+        <svg viewBox="0 0 120 120" aria-hidden="true">
+          <defs>
+            <linearGradient id="scoreGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#6f9a78"></stop>
+              <stop offset="100%" stop-color="#c4a35a"></stop>
+            </linearGradient>
+          </defs>
+          <circle class="ring-bg" cx="60" cy="60" r="52"></circle>
+          <circle class="ring-fg" id="ring" cx="60" cy="60" r="52"></circle>
+        </svg>
+        <div class="score-center">
+          <span id="score-num">0</span>
+          <span id="score-of">out of 20</span>
+        </div>
+      </div>
+      <p class="end-msg" id="end-msg"></p>
+      <div class="prize-menu" id="prize-menu" hidden></div>
+      <p class="prize-claim" id="prize-claim" hidden></p>
+      <p class="signoff">love, Bingu</p>
+      <button class="primary" id="again-btn" type="button">Play Again</button>
+    </section>
+  </main>
+
+  <div id="fx" aria-hidden="true"></div>
+
+  <noscript>
+    <p style="text-align:center;font-family:sans-serif;padding:24px;">This quiz needs JavaScript, which is already in the page. Turn it on and open the file again.</p>
+  </noscript>
+
+  <script>
+    const questions = [
+      {
+        q: "What's my favourite flavour of Capri Sun?",
+        choices: ["Strawberry Kiwi", "Pacific Cooler", "Tropical Punch", "Haven't had Capri Sun."],
+        a: 1,
+        right: "Correct! Pacific Cooler. You really do know me ⚡",
+        wrong: "Nope! It's Pacific Cooler. But I still love you 😌"
+      },
+      {
+        q: "What's my go-to nickname for you?",
+        choices: ["Babe", "Pingu", "Sweetheart", "My Queen"],
+        a: 1,
+        right: "Pingu. Always Pingu. You really do know me 🐧",
+        wrong: "Nope! I call you Pingu. But I still love you 😌"
+      },
+      {
+        q: "What crime would I most likely commit?",
+        choices: ["Robbery", "Ragebaiting you", "Tax fraud", "Disturbing the peace with my yapping"],
+        a: 1,
+        right: "Ragebaiting you. Guilty as charged ⚡",
+        wrong: "Nope! I'd ragebait you. Lovingly, though 😌"
+      },
+      {
+        q: "What's my biggest insecurity?",
+        choices: ["That I'm too quiet", "That I'm too much", "That I'm too tall", "That I don't talk enough"],
+        a: 1,
+        right: "That I'm too much. And you stay anyway 🥰",
+        wrong: "It's that I'm too much. You make that feel okay 😌"
+      },
+      {
+        q: "What's your full nickname?",
+        choices: ["My little bear", "Pingu Dino Nugget", "Santa's retired elf", "pingu"],
+        a: 1,
+        right: "Pingu Dino Nugget. The full, glorious title 🐧",
+        wrong: "Nope! Pingu Dino Nugget. All of it 😌"
+      },
+      {
+        q: "What's my favourite thing to do when I'm stressed?",
+        choices: ["Go for a run", "Yap about it", "Sleep", "Eat cookies"],
+        a: 1,
+        right: "I yap about it. Preferably to you ⚡",
+        wrong: "Nope! I yap about it. You can have the sequel 😌"
+      },
+      {
+        q: "Who influenced me to become an Engineer?",
+        choices: ["Donald Davenport", "Tony Stark", "Sherlock Holmes", "Harry Potter"],
+        a: 1,
+        right: "Tony Stark. That's the dream I chased ⚡",
+        wrong: "Tony Stark. I'll tell you that story again 😌"
+      },
+      {
+        q: "What did Shrek ride to victory?",
+        choices: ["A horse", "A wave of dragon vomit", "A dragon", "A Capri Sun"],
+        a: 1,
+        right: "A wave of dragon vomit. Peak cinema 🐧",
+        wrong: "A wave of dragon vomit. Iconic, honestly 😌"
+      },
+      {
+        q: "What's the name of the planet in The Last Star?",
+        choices: ["Caprisun", "Pandora", "Starfruit", "Vael'nar"],
+        a: 0,
+        right: "Caprisun. That one's ours ⚡",
+        wrong: "It's Caprisun. That planet is yours 😌"
+      },
+      {
+        q: "What did I write for you?",
+        choices: ["A poem", "A song", "A whole novel", "A painting"],
+        a: 2,
+        right: "A whole novel. Every page was for you 🥰",
+        wrong: "A whole novel. I wasn't being casual 😌"
+      },
+      {
+        q: "What's my toxic trait (that you love anyway)?",
+        choices: ["I ragebaite you", "I'm always late", "I steal your food", "I talk too much"],
+        a: 0,
+        right: "I ragebaite you. And you love me anyway ⚡",
+        wrong: "Nope! I ragebaite you. It's how I flirt 😌"
+      },
+      {
+        q: "What fictional universe would I want to be in?",
+        choices: ["Star Trek", "Harry Potter", "Doctor Who", "The DC universe"],
+        a: 1,
+        right: "Harry Potter. Where else would Bingu be? ⚡",
+        wrong: "Harry Potter. I already wrote us in 😌"
+      },
+      {
+        q: "What do I love most about you?",
+        choices: ["Your laugh", "Your wonky brain", "Your art", "All of the above"],
+        a: 1,
+        right: "Your wonky brain. My favourite place 🥰",
+        wrong: "Your wonky brain. That's the one. Always 😌"
+      },
+      {
+        q: "What's the name of the story I wrote about us at Hogwarts?",
+        choices: ["The Room Beyond the Map", "Harry Potter and the Wonky Pingu", "Bingu Potter", "The Secret Door"],
+        a: 0,
+        right: "The Room Beyond the Map. You remembered ⚡",
+        wrong: "The Room Beyond the Map. I'll read it to you again 😌"
+      },
+      {
+        q: "What did I say I'd do if we ever had an argument?",
+        choices: ["Walk away", "Be the first to apologise", "Go quiet", "Blame you"],
+        a: 1,
+        right: "I'd apologise first. Every time 🥰",
+        wrong: "I'd be the first to apologise. I meant that 😌"
+      },
+      {
+        q: "What's my biggest fear about us?",
+        choices: ["That you'll get bored of me", "That I'll lose you", "That we'll argue", "That you'll move away"],
+        a: 1,
+        right: "That I'll lose you. So I'm not going to ⚡",
+        wrong: "That I'll lose you. I'm staying right here 😌"
+      },
+      {
+        q: "What did I name my tomatoes in the Pingu story?",
+        choices: ["Tomatoes", "CapriSun", "Pingu", "Shrek"],
+        a: 1,
+        right: "CapriSun. Even the tomatoes are in on it 🐧",
+        wrong: "CapriSun. I name the important things after you 😌"
+      },
+      {
+        q: "What is my favourite genre?",
+        choices: ["Comedy", "Horror", "Mystery", "Action"],
+        a: 1,
+        right: "Horror. Come be scared with me ⚡",
+        wrong: "Horror. I'll hold your hand through it 😌"
+      },
+      {
+        q: "What did you call me that made me melt?",
+        choices: ["My softie bear", "Bingu Potter", "My little penguin", "My favourite idiot"],
+        a: 0,
+        right: "My softie bear. I melted. I still do 🥰",
+        wrong: "My softie bear. I haven't recovered 😌"
+      },
+      {
+        q: "What do I want to be for you?",
+        choices: ["Your best friend", "Your protector", "Your softie bear", "All of the above"],
+        a: 2,
+        right: "Your softie bear. That's the whole wish 🐧",
+        wrong: "Your softie bear. That's what I want to be 😌"
+      }
+    ];
+
+    const CIRC = 326.73;
+    const motionOk = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const startEl = document.getElementById("start");
+    const quizEl = document.getElementById("quiz");
+    const endEl = document.getElementById("end");
+    const progressLabel = document.getElementById("progress-label");
+    const barWrap = document.getElementById("bar-wrap");
+    const bar = document.getElementById("bar");
+    const questionEl = document.getElementById("question");
+    const answersEl = document.getElementById("answers");
+    const feedbackEl = document.getElementById("feedback");
+    const scoreNum = document.getElementById("score-num");
+    const scoreOf = document.getElementById("score-of");
+    const endMsg = document.getElementById("end-msg");
+    const prizeMenu = document.getElementById("prize-menu");
+    const prizeClaim = document.getElementById("prize-claim");
+    const prizeGroups = [
+      {
+        label: "Sweet & Romantic",
+        prizes: [
+          ["A \"Pingu's Choice\" Date", "You win: one date, entirely planned by me, where you get to choose everything. Food, activity, vibe. I'm just there to make it happen."],
+          ["A Handwritten Letter", "You win: a handwritten letter from me, sealed and delivered, about all the things I don't say enough."],
+          ["A Personal Playlist", "You win: a playlist I've made just for you. Every song reminds me of you in some way."],
+          ["A \"Yes Day\"", "You win: one day where I say yes to whatever you ask. Within reason. Don't abuse it. 😌"]
+        ]
+      },
+      {
+        label: "Playful & Cheeky",
+        prizes: [
+          ["A \"Get Out of Jail Free\" Card", "You win: one official pardon for any future ragebaiting. Use it wisely. It expires in 24 hours because I can't help myself."],
+          ["A \"Cookie Delivery\" Voucher", "You win: one cookie delivery, anywhere in London, on demand. I will drive. I will not complain. I will pretend it's not out of my way."],
+          ["A \"You Were Right\" Badge", "You win: one official acknowledgement that you were right about something. I will say it out loud. I will not argue. I will not make a face."],
+          ["A \"Pingu the Deadly\" Sequel", "You win: a new chapter of Pingu the Deadly, written by me, where you get to choose what happens next. Within reason. Don't make me fight another dragon."]
+        ]
+      },
+      {
+        label: "Sentimental & Meaningful",
+        prizes: [
+          ["A Custom 3D Print", "You win: the 3D printed throne room I've been working on. You and me, on the throne, forever."],
+          ["A \"First Date\" Reenactment", "You win: a re-do of our first date. Same arcade, same vibe, but this time I'll be less awkward. Maybe."],
+          ["A \"Choose Your Adventure\" Book", "You win: a short story written for you, where you make the choices. It's your world. I'm just living in it."],
+          ["A Promise", "You win: a promise. One thing I'll do for you, no questions asked. You just have to tell me what it is."]
+        ]
+      }
+    ];
+    const ring = document.getElementById("ring");
+    const fx = document.getElementById("fx");
+
+    let index = 0;
+    let score = 0;
+    let locked = false;
+    let timer = 0;
+
+    function show(screen) {
+      startEl.hidden = screen !== startEl;
+      quizEl.hidden = screen !== quizEl;
+      endEl.hidden = screen !== endEl;
+    }
+
+    function sparkle(x, y) {
+      if (!motionOk) return;
+      const colors = ["#c4a35a", "#e8c56a", "#3f8f5a", "#2f6b45", "#f3e2b0"];
+      const glyphs = ["✦", "⚡", "✧", "✦"];
+      for (let i = 0; i < 24; i++) {
+        const el = document.createElement("span");
+        const angle = (Math.PI * 2 * i) / 24 + Math.random() * 0.25;
+        const dist = 36 + Math.random() * 88;
+        el.style.left = x + "px";
+        el.style.top = y + "px";
+        el.style.setProperty("--dx", Math.cos(angle) * dist + "px");
+        el.style.setProperty("--dy", Math.sin(angle) * dist + "px");
+        el.style.setProperty("--rot", Math.random() * 160 - 80 + "deg");
+        if (i % 2 === 0) {
+          el.className = "spark";
+          el.textContent = glyphs[i % glyphs.length];
+          el.style.color = colors[i % colors.length];
+          el.style.fontSize = (i % 4 === 2 ? 18 : 14) + Math.random() * 6 + "px";
+        } else {
+          el.className = "spark bit";
+          el.style.background = colors[i % colors.length];
+          el.style.width = 8 + Math.random() * 4 + "px";
+          el.style.height = 11 + Math.random() * 5 + "px";
+        }
+        fx.appendChild(el);
+        setTimeout(() => el.remove(), 1400);
+      }
+    }
+
+    function render() {
+      const item = questions[index];
+      const n = index + 1;
+      progressLabel.textContent = "Question " + n + " of " + questions.length;
+      barWrap.setAttribute("aria-valuenow", String(n));
+      barWrap.setAttribute("aria-valuemax", String(questions.length));
+      bar.style.width = (n / questions.length) * 100 + "%";
+      questionEl.textContent = item.q;
+      feedbackEl.textContent = "";
+      feedbackEl.className = "feedback";
+      answersEl.innerHTML = "";
+
+      item.choices.forEach((choice, i) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "answer";
+        const letter = document.createElement("span");
+        letter.className = "letter";
+        letter.textContent = "ABCD"[i];
+        const label = document.createElement("span");
+        label.className = "choice";
+        label.textContent = choice;
+        btn.append(letter, label);
+        btn.addEventListener("click", () => choose(i));
+        answersEl.appendChild(btn);
+      });
+
+      locked = false;
+      if (motionOk) {
+        questionEl.classList.remove("q-enter");
+        void questionEl.offsetWidth;
+        questionEl.classList.add("q-enter");
+      }
+    }
+
+    function choose(pick) {
+      if (locked) return;
+      locked = true;
+      const item = questions[index];
+      const buttons = [...answersEl.children];
+      buttons.forEach((btn) => {
+        btn.disabled = true;
+      });
+      buttons[item.a].classList.add("correct");
+      const right = pick === item.a;
+      if (right) {
+        score += 1;
+        feedbackEl.textContent = item.right;
+        feedbackEl.className = "feedback show good";
+        const rect = buttons[pick].getBoundingClientRect();
+        sparkle(rect.left + rect.width / 2, rect.top + rect.height / 2);
+      } else {
+        buttons[pick].classList.add("wrong", "shake");
+        feedbackEl.textContent = item.wrong;
+        feedbackEl.className = "feedback show bad";
+      }
+      buttons.forEach((btn, i) => {
+        if (i !== item.a && i !== pick) btn.classList.add("dim");
+      });
+      feedbackEl.scrollIntoView({ block: "nearest", behavior: motionOk ? "smooth" : "auto" });
+      timer = setTimeout(advance, 1500);
+    }
+
+    function advance() {
+      if (index + 1 >= questions.length) {
+        showEnd();
+        return;
+      }
+      index += 1;
+      render();
+    }
+
+    function setGroupOpen(groupEl, open) {
+      const toggle = groupEl.querySelector(".prize-toggle");
+      const panel = groupEl.querySelector(".prize-panel");
+      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+      panel.hidden = !open;
+    }
+
+    function renderPrizes() {
+      prizeMenu.innerHTML = "";
+      prizeClaim.hidden = true;
+      prizeClaim.textContent = "";
+      prizeGroups.forEach((group, index) => {
+        const groupEl = document.createElement("div");
+        groupEl.className = "prize-group";
+        const toggle = document.createElement("button");
+        toggle.type = "button";
+        toggle.className = "prize-toggle";
+        toggle.setAttribute("aria-expanded", "false");
+        const name = document.createElement("span");
+        name.textContent = group.label;
+        const meta = document.createElement("span");
+        meta.className = "prize-meta";
+        const yours = document.createElement("span");
+        yours.className = "prize-yours";
+        yours.hidden = true;
+        yours.textContent = "yours";
+        const chev = document.createElement("span");
+        chev.className = "chev";
+        chev.setAttribute("aria-hidden", "true");
+        meta.append(yours, chev);
+        toggle.append(name, meta);
+        const panel = document.createElement("div");
+        panel.className = "prize-panel";
+        panel.hidden = true;
+        panel.id = "prize-panel-" + index;
+        toggle.setAttribute("aria-controls", panel.id);
+        group.prizes.forEach((prize) => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "prize";
+          btn.setAttribute("aria-pressed", "false");
+          const title = document.createElement("span");
+          title.className = "prize-title";
+          title.textContent = prize[0];
+          const copy = document.createElement("span");
+          copy.className = "prize-copy";
+          copy.textContent = prize[1];
+          btn.append(title, copy);
+          btn.addEventListener("click", () => choosePrize(btn, prize[0]));
+          panel.appendChild(btn);
+        });
+        toggle.addEventListener("click", () => {
+          const willOpen = toggle.getAttribute("aria-expanded") !== "true";
+          prizeMenu.querySelectorAll(".prize-group").forEach((el) => setGroupOpen(el, false));
+          if (willOpen) setGroupOpen(groupEl, true);
+        });
+        groupEl.append(toggle, panel);
+        prizeMenu.appendChild(groupEl);
+      });
+    }
+
+    function choosePrize(btn, title) {
+      prizeMenu.querySelectorAll(".prize").forEach((el) => {
+        el.classList.remove("chosen");
+        el.setAttribute("aria-pressed", "false");
+      });
+      prizeMenu.querySelectorAll(".prize-yours").forEach((el) => {
+        el.hidden = true;
+      });
+      btn.classList.add("chosen");
+      btn.setAttribute("aria-pressed", "true");
+      btn.closest(".prize-group").querySelector(".prize-yours").hidden = false;
+      prizeClaim.hidden = false;
+      prizeClaim.textContent = title + ". It's yours.";
+      const rect = btn.getBoundingClientRect();
+      sparkle(rect.left + rect.width / 2, rect.top + rect.height / 3);
+    }
+
+    function countTo(n) {
+      if (!motionOk) {
+        scoreNum.textContent = String(n);
+        return;
+      }
+      const start = performance.now();
+      function tick(now) {
+        const t = Math.min(1, (now - start) / 700);
+        scoreNum.textContent = String(Math.round(n * (1 - Math.pow(1 - t, 3))));
+        if (t < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }
+
+    function showEnd() {
+      const total = questions.length;
+      const pct = score / total;
+      const won = score >= 17;
+      scoreOf.textContent = "out of " + total;
+      endMsg.textContent = won
+        ? "You unlocked a prize. Pick the one you want."
+        : "No prize this time... but you're still my favourite person. Try again? 😌";
+      scoreNum.textContent = "0";
+      prizeMenu.hidden = !won;
+      if (won) renderPrizes();
+      ring.style.transition = "none";
+      ring.style.strokeDashoffset = String(CIRC);
+      show(endEl);
+      countTo(score);
+      requestAnimationFrame(() => {
+        ring.style.transition = "";
+        requestAnimationFrame(() => {
+          ring.style.strokeDashoffset = String(CIRC * (1 - pct));
+        });
+      });
+      if (won) {
+        const rect = endEl.getBoundingClientRect();
+        sparkle(rect.left + rect.width / 2, rect.top + 120);
+      }
+    }
+
+    function startQuiz() {
+      clearTimeout(timer);
+      index = 0;
+      score = 0;
+      locked = false;
+      show(quizEl);
+      render();
+    }
+
+    document.getElementById("start-btn").addEventListener("click", startQuiz);
+    document.getElementById("again-btn").addEventListener("click", startQuiz);
+  </script>
+</body>
+</html>
