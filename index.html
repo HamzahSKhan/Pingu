@@ -8,7 +8,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐧</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:wght@600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:wght@600;700&family=Press+Start+2P&family=Quicksand:wght@400;500;600;700&family=VT323&display=swap" rel="stylesheet">
   <style>
     :root {
       --ink: #243328;
@@ -31,11 +31,16 @@
 
     html, body { margin: 0; }
 
+    html { overflow-x: clip; }
+
     body {
       min-height: 100dvh;
+      width: 100%;
       display: flex;
-      justify-content: center;
-      align-items: safe center;
+      flex-direction: column;
+      align-items: center;
+      justify-content: safe center;
+      overflow-x: clip;
       padding: max(20px, env(safe-area-inset-top)) 16px max(24px, env(safe-area-inset-bottom));
       font-family: "Quicksand", "Trebuchet MS", sans-serif;
       color: var(--ink);
@@ -113,10 +118,19 @@
     .floats span:nth-child(4) { right: 12%; bottom: 18%; animation-delay: -3s; }
     .floats span:nth-child(5) { left: 46%; top: 6%; animation-delay: -2s; font-size: 1.2rem; }
 
+    main {
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+    }
+
     .card {
       position: relative;
       z-index: 1;
       width: min(440px, 100%);
+      max-width: 100%;
+      min-width: 0;
+      margin-inline: auto;
       padding: 30px 22px 24px;
       background:
         linear-gradient(var(--card), var(--card)) padding-box,
@@ -223,6 +237,9 @@
       border: 0;
       border-radius: 999px;
       padding: 15px 18px;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
       background: var(--sage);
       color: #fffaf3;
       font-weight: 700;
@@ -645,6 +662,14 @@
       .card { padding: 36px 32px 30px; }
     }
 
+    @media (max-width: 720px) {
+      body { padding-left: 12px; padding-right: 12px; }
+      .card { padding: 22px 16px 18px; border-radius: 22px; }
+      .book-page { max-height: none; }
+      .plate img { max-height: 52vh; }
+      .book-title { font-size: clamp(1.8rem, 9vw, 2.4rem); }
+    }
+
     @media (max-width: 420px) {
       .floats span { font-size: 1.2rem; opacity: 0.38; }
       .question { font-size: 1.18rem; }
@@ -655,6 +680,433 @@
         animation: none !important;
         transition: none !important;
       }
+    }
+
+    .home-tabs {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .home-tab {
+      width: 100%;
+      padding: 12px 14px;
+      text-align: left;
+      background: #fffdf9;
+      border: 1.5px solid var(--line);
+      border-radius: 16px;
+      color: var(--ink);
+      font-weight: 700;
+      font-size: 0.95rem;
+      line-height: 1.35;
+    }
+
+    .home-tab[aria-selected="true"] {
+      background: #fff8ea;
+      border-color: #c4a35a;
+      color: #6a5220;
+      box-shadow: inset 0 0 0 1px #c4a35a;
+    }
+
+    .home-panel { margin-top: 18px; }
+
+    .home-panel[hidden] { display: none; }
+
+    .guide-name {
+      display: block;
+      margin-top: 2px;
+      font-family: "Dancing Script", cursive;
+      font-weight: 700;
+      font-size: clamp(2.15rem, 8.5vw, 3.15rem);
+      line-height: 0.95;
+      color: #2a4632;
+    }
+
+    .card.is-book { width: min(960px, 100%); }
+
+    .book,
+    .book-page,
+    .plate {
+      max-width: 100%;
+      min-width: 0;
+    }
+
+    .book-page {
+      min-height: 240px;
+      max-height: min(68vh, 760px);
+      overflow-x: hidden;
+      overflow-y: auto;
+      padding: 2px 2px 0;
+    }
+
+    .book-kicker {
+      margin: 0;
+      text-align: center;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .book-title {
+      margin: 6px 0 14px;
+      text-align: center;
+      font-family: "Dancing Script", cursive;
+      font-weight: 700;
+      font-size: clamp(2rem, 7vw, 2.85rem);
+      line-height: 0.95;
+      color: #2a4632;
+    }
+
+    .book-copy {
+      margin: 0 0 12px;
+      font-size: 1.02rem;
+      font-weight: 500;
+      line-height: 1.55;
+      color: #3c5144;
+    }
+
+    .book-warn {
+      margin: 16px 0 4px;
+      text-align: center;
+      font-weight: 700;
+      line-height: 1.45;
+      color: #6a5220;
+    }
+
+    .plate {
+      margin: 0 0 14px;
+      padding: 8px 8px 10px;
+      background: #fff;
+      border: 1px solid #eadfcd;
+      box-shadow: 0 12px 28px rgba(55, 90, 64, 0.1);
+    }
+
+    .plate img {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      max-height: min(62vh, 640px);
+      object-fit: contain;
+      background: #f7f1e6;
+    }
+
+    .plate-empty {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      background:
+        radial-gradient(ellipse at 30% 20%, rgba(212, 176, 92, 0.35), transparent 55%),
+        linear-gradient(165deg, #f7f1e6, #e5f0e4);
+    }
+
+    .plate figcaption {
+      margin-top: 8px;
+      text-align: center;
+      font-family: "Dancing Script", cursive;
+      font-size: 1.55rem;
+      color: #2a4632;
+    }
+
+    .book-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .book-arrow {
+      width: 46px;
+      height: 46px;
+      flex: none;
+      border: 1.5px solid var(--line);
+      border-radius: 50%;
+      background: #fffdf9;
+      color: #6a5220;
+      font-size: 1.5rem;
+      line-height: 1;
+    }
+
+    .book-arrow:disabled { opacity: 0.35; cursor: default; }
+
+    .book-count {
+      margin: 0;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    @keyframes bookIn {
+      from { opacity: 0; transform: translateX(16px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    .book-sub {
+      margin: -6px 0 14px;
+      text-align: center;
+      font-family: "Dancing Script", cursive;
+      font-size: clamp(1.45rem, 4vw, 1.85rem);
+      color: #3f6d4c;
+    }
+
+    @keyframes bookInPrev {
+      from { opacity: 0; transform: translateX(-16px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    .book-page.turn-next { animation: bookIn 0.35s ease; }
+    .book-page.turn-prev { animation: bookInPrev 0.35s ease; }
+
+    @media (hover: hover) {
+      .home-tab:hover { border-color: #d4bc78; }
+    }
+
+    body.in-game {
+      display: block;
+      padding: 0;
+      background: #07080c;
+      animation: none;
+    }
+
+    body.in-game main,
+    body.in-game .blob,
+    body.in-game .floats,
+    body.in-game #fx { display: none; }
+
+    #adventure {
+      position: fixed;
+      inset: 0;
+      z-index: 30;
+      display: flex;
+      background: #07080c;
+      color: #e6d7b8;
+      font-family: "VT323", ui-monospace, monospace;
+    }
+
+    #adventure[hidden] { display: none !important; }
+
+    #adventure::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 3;
+      background: radial-gradient(ellipse at center, transparent 45%, rgba(0, 0, 0, 0.5) 100%);
+    }
+
+    #adventure::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 4;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.18) 0px,
+        rgba(0, 0, 0, 0.18) 1px,
+        transparent 1px,
+        transparent 4px
+      );
+    }
+
+    #adventure [hidden] { display: none !important; }
+
+    .crt-frame {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      width: min(860px, 100%);
+      margin: 0 auto;
+      min-height: 0;
+      padding: max(18px, env(safe-area-inset-top)) 18px max(14px, env(safe-area-inset-bottom));
+    }
+
+    .adv-home {
+      position: absolute;
+      top: max(10px, env(safe-area-inset-top));
+      right: 12px;
+      z-index: 5;
+      padding: 8px;
+      border: 1px solid #5c3a28;
+      background: #07080c;
+      color: #b7a88a;
+      font-family: "Press Start 2P", monospace;
+      font-size: 8px;
+      line-height: 1.4;
+    }
+
+    .adv-screen {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      width: min(100%, 720px);
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .scene-canvas {
+      width: min(100%, 640px);
+      height: auto;
+      align-self: center;
+      background: #141a2e;
+      border: 3px solid #3a2418;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+
+    #adv-play .scene-canvas {
+      width: auto;
+      max-width: 100%;
+      height: min(190px, 30vh);
+    }
+
+    .adv-title,
+    .end-kicker-pix {
+      margin: 0;
+      font-family: "Press Start 2P", monospace;
+      font-size: clamp(0.72rem, 2.5vw, 1rem);
+      font-weight: 400;
+      line-height: 1.7;
+      color: #e6d7b8;
+    }
+
+    .adv-kicker {
+      margin: 0;
+      color: #7d9a90;
+      font-size: 1.4rem;
+    }
+
+    .adv-begin {
+      border: 0;
+      background: none;
+      color: #c46a32;
+      font-family: "Press Start 2P", monospace;
+      font-size: 10px;
+      line-height: 1.8;
+    }
+
+    .name-lead,
+    .end-copy {
+      margin: 0;
+      max-width: 38rem;
+      font-size: 1.55rem;
+      line-height: 1.35;
+    }
+
+    .name-row,
+    .cmd-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: min(100%, 640px);
+    }
+
+    .name-row { border-bottom: 2px solid #3a2418; }
+
+    .cmd-row {
+      border-top: 2px solid #3a2418;
+      padding-top: 8px;
+    }
+
+    .prompt {
+      color: #c46a32;
+      font-size: 1.8rem;
+      line-height: 1;
+    }
+
+    #name-input,
+    #cmd {
+      flex: 1;
+      width: 100%;
+      min-width: 0;
+      border: 0;
+      background: transparent;
+      color: #e6d7b8;
+      font: inherit;
+      font-size: 22px;
+      outline: none;
+    }
+
+    #adv-play {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      width: min(100%, 720px);
+      margin: 28px auto 0;
+      min-height: 0;
+    }
+
+    #adv-log {
+      flex: 0 1 auto;
+      overflow: auto;
+      margin: 12px 0 0;
+      min-height: 0;
+    }
+
+    #adv-log p,
+    #adv-note,
+    #adv-pingu,
+    #adv-exits { margin: 0 0 10px; }
+
+    #adv-note,
+    #adv-pingu,
+    #adv-exits { flex: none; }
+
+    .room-name {
+      font-family: "Press Start 2P", monospace;
+      font-size: 11px;
+      line-height: 1.7;
+      color: #e6d7b8;
+    }
+
+    .room-desc,
+    .note-line {
+      font-size: 1.45rem;
+      line-height: 1.3;
+      white-space: pre-wrap;
+    }
+
+    .pingu-line { color: #c49aa4; font-size: 1.4rem; line-height: 1.3; }
+
+    .exits-line { color: #7d9a90; font-size: 1.35rem; }
+
+    #adv-hints {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      min-height: 28px;
+      margin-top: auto;
+      margin-bottom: 6px;
+      color: #7d9a90;
+      font-size: 1.25rem;
+    }
+
+    .hint-btn {
+      border: 1px solid #3d6b66;
+      background: transparent;
+      color: #7d9a90;
+      padding: 2px 8px;
+      font: inherit;
+    }
+
+    #adv-status {
+      margin: 0 0 6px;
+      color: #c46a32;
+      font-family: "Press Start 2P", monospace;
+      font-size: 8px;
+      line-height: 1.6;
     }
   </style>
 </head>
@@ -672,15 +1124,43 @@
   <main>
     <section class="card" id="start">
       <div class="mascot" aria-hidden="true">🐧</div>
-      <p class="eyebrow">a little quiz, just for you</p>
-      <h1 class="title">
-        <span class="title-small">How well do you know</span>
-        <span class="title-big">your Bingu?<i class="bolt" aria-hidden="true">⚡</i></span>
-      </h1>
-      <div class="rule" aria-hidden="true">✦</div>
-      <p class="intro">Think you know your Bingu?<br>Let's find out.</p>
-      <p class="hint">Twenty questions. No studying. Just us.</p>
-      <button class="primary" id="start-btn" type="button">Start Quiz</button>
+      <div class="home-tabs" role="tablist" aria-label="Home">
+        <button class="home-tab" id="tab-quiz" type="button" role="tab" aria-selected="true" aria-controls="panel-quiz">The Quiz</button>
+        <button class="home-tab" id="tab-guide" type="button" role="tab" aria-selected="false" aria-controls="panel-guide" tabindex="-1">Pingu: The Demon's Gambit</button>
+        <button class="home-tab" id="tab-book" type="button" role="tab" aria-selected="false" aria-controls="panel-book" tabindex="-1">The Companion Guide</button>
+      </div>
+      <div id="panel-quiz" class="home-panel" role="tabpanel" aria-labelledby="tab-quiz">
+        <p class="eyebrow">a little quiz, just for you</p>
+        <h1 class="title">
+          <span class="title-small">How well do you know</span>
+          <span class="title-big">your Bingu?<i class="bolt" aria-hidden="true">⚡</i></span>
+        </h1>
+        <div class="rule" aria-hidden="true">✦</div>
+        <p class="intro">Think you know your Bingu?<br>Let's find out.</p>
+        <p class="hint">Twenty questions. No studying. Just us.</p>
+        <button class="primary" id="start-btn" type="button">Start Quiz</button>
+      </div>
+      <div id="panel-guide" class="home-panel" role="tabpanel" aria-labelledby="tab-guide" hidden>
+        <p class="eyebrow">a text adventure</p>
+        <h2 class="title">
+          <span class="title-small">Pingu</span>
+          <span class="guide-name">The Demon's Gambit</span>
+        </h2>
+        <div class="rule" aria-hidden="true">✦</div>
+        <p class="intro">The aunt has the fortress. The crown is still inside. You are the demon she summoned.</p>
+        <p class="hint">Type what you do. Try not to get caught.</p>
+        <a class="primary" id="guide-btn" href="https://pinguthrone.vercel.app/">Play</a>
+      </div>
+      <div id="panel-book" class="home-panel" role="tabpanel" aria-labelledby="tab-book" hidden>
+        <div class="book" id="book">
+          <div class="book-page" id="book-page" tabindex="0" aria-live="polite"></div>
+          <div class="book-nav">
+            <button class="book-arrow" id="book-prev" type="button" aria-label="Previous page">‹</button>
+            <p class="book-count" id="book-count"></p>
+            <button class="book-arrow" id="book-next" type="button" aria-label="Next page">›</button>
+          </div>
+        </div>
+      </div>
     </section>
 
     <section class="card" id="quiz" hidden>
@@ -724,6 +1204,43 @@
   </main>
 
   <div id="fx" aria-hidden="true"></div>
+
+  <div id="adventure" hidden>
+    <div class="crt-frame">
+      <button class="adv-home" id="adv-home" type="button">Home</button>
+      <div id="adv-title" class="adv-screen">
+        <canvas class="scene-canvas" id="title-canvas" width="160" height="90"></canvas>
+        <h1 class="adv-title">Pingu: The Demon's Gambit</h1>
+        <button class="adv-begin" id="adv-begin" type="button">Press ENTER to begin</button>
+      </div>
+      <div id="adv-name" class="adv-screen" hidden>
+        <p class="name-lead">The summoning needs a name.</p>
+        <form class="name-row" id="name-form">
+          <label class="prompt" for="name-input">&gt;</label>
+          <input id="name-input" maxlength="18" autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="your name" aria-label="Your name">
+        </form>
+      </div>
+      <div id="adv-play" hidden>
+        <canvas class="scene-canvas" id="scene" width="160" height="90"></canvas>
+        <div id="adv-log"></div>
+        <p id="adv-note" class="note-line" hidden></p>
+        <p id="adv-pingu" class="pingu-line" hidden></p>
+        <p id="adv-exits" class="exits-line"></p>
+        <div id="adv-hints"></div>
+        <p id="adv-status"></p>
+        <form class="cmd-row" id="cmd-form">
+          <label class="prompt" for="cmd">&gt;</label>
+          <input id="cmd" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="send" aria-label="What do you do?">
+        </form>
+      </div>
+      <div id="adv-end" class="adv-screen" hidden>
+        <canvas class="scene-canvas" id="end-canvas" width="160" height="90"></canvas>
+        <p class="end-kicker-pix" id="end-kicker-pix"></p>
+        <p class="end-copy" id="end-copy"></p>
+        <button class="adv-begin" id="adv-again" type="button">Press ENTER to play again</button>
+      </div>
+    </div>
+  </div>
 
   <noscript>
     <p style="text-align:center;font-family:sans-serif;padding:24px;">This quiz needs JavaScript, which is already in the page. Turn it on and open the file again.</p>
@@ -1203,6 +1720,1391 @@
 
     document.getElementById("start-btn").addEventListener("click", startQuiz);
     document.getElementById("again-btn").addEventListener("click", startQuiz);
+
+    const tabQuiz = document.getElementById("tab-quiz");
+    const tabGuide = document.getElementById("tab-guide");
+    const tabBook = document.getElementById("tab-book");
+    const panelQuiz = document.getElementById("panel-quiz");
+    const panelGuide = document.getElementById("panel-guide");
+    const panelBook = document.getElementById("panel-book");
+    const homeTabs = [
+      { key: "quiz", button: tabQuiz, panel: panelQuiz },
+      { key: "guide", button: tabGuide, panel: panelGuide },
+      { key: "book", button: tabBook, panel: panelBook }
+    ];
+
+    function selectHomeTab(which) {
+      homeTabs.forEach((item) => {
+        const on = item.key === which;
+        item.button.setAttribute("aria-selected", on ? "true" : "false");
+        item.button.tabIndex = on ? 0 : -1;
+        item.panel.hidden = !on;
+      });
+      startEl.classList.toggle("is-book", which === "book");
+    }
+
+    homeTabs.forEach((item, index) => {
+      item.button.addEventListener("click", () => selectHomeTab(item.key));
+      item.button.addEventListener("keydown", (event) => {
+        const forward = event.key === "ArrowDown" || event.key === "ArrowRight";
+        const back = event.key === "ArrowUp" || event.key === "ArrowLeft";
+        if (!forward && !back) return;
+        event.preventDefault();
+        const next = homeTabs[(index + (forward ? 1 : homeTabs.length - 1)) % homeTabs.length];
+        selectHomeTab(next.key);
+        next.button.focus();
+      });
+    });
+
+    /* Companion guide pictures live in images/. png, jpg, jpeg, or webp.
+       Atlantis: atlantis, tidal-throne, geography, crown-palace, high-terrace,
+       grand-gate, temple-district, lower-city, harbour, bridge-of-tides,
+       sunset-isles, trident-isle, western-fort, scholars-reach, beyond, character.
+       Court and after: pingu, shrek, grimtooth, vhorakth, deer, hydra, geese,
+       capri-sun, crown, bow. */
+    const bookPages = [
+      {
+        kicker: "The Forbidden Archive",
+        title: "A Note from the Scribe",
+        paragraphs: [
+          "This guide was compiled by the Unknown Scribe, Keeper of the Forbidden Archive, who was later executed for writing it down. It is dedicated to the Queen of Shattered Souls, Grand Regent of Atlantis, and Overlord of the Abyss — Her Majesty, Pingu.",
+          "It is also dedicated to Shrek, who is not mentioned in any of the official histories because no one believes he actually existed."
+        ],
+        warning: "Please do not tell Her Majesty you read this. She will make your skull into a cup."
+      },
+      {
+        kicker: "The World",
+        title: "Atlantis — A Map",
+        image: "atlantis",
+        caption: "Atlantis — The Tidal Throne",
+        subtitle: "The Crown of the Seven Waters",
+        paragraphs: []
+      },
+      {
+        kicker: "The World",
+        title: "The Tidal Throne",
+        image: "tidal-throne",
+        paragraphs: [
+          "Atlantis is an ancient, magnificent maritime capital, a city of ivory towers, golden domes, cascading waterfalls and monumental bridges, built upon a vast collection of rocky islands overlooking the Atlantis Expanse.",
+          "For thousands of years, Atlantis has stood as the beating heart of a powerful oceanic civilisation. Its architecture is a testament to the wealth and ambition of its rulers: towering palaces rise above the clouds, immense aqueducts carry water between mountains, and marble bridges stretch across entire bays.",
+          "Yet Atlantis is more than a city. It is a declaration of power, a monument to the belief that even the oceans themselves can be mastered."
+        ]
+      },
+      {
+        kicker: "The World",
+        title: "The geography of Atlantis",
+        image: "geography",
+        paragraphs: [
+          "The city occupies an enormous natural harbour surrounded by the Serpent Mountains to the northeast and the scattered islands of the Shattered Reefs to the west.",
+          "Its most distinctive feature is its elevation. Rather than spreading across a flat landscape, Atlantis rises in successive tiers of marble terraces, each more magnificent than the last.",
+          "The lowest districts sit just above the turquoise waters, filled with merchants, sailors, craftsmen and shipbuilders. Above them stand temples, gardens and the estates of noble families. At the summit, dominating the entire city, rises the Crown Palace.",
+          "Waterfalls plunge hundreds of feet from the upper terraces into the sea below, while vast bridges and aqueducts connect the otherwise isolated districts."
+        ]
+      },
+      {
+        kicker: "The eleven landmarks",
+        plate: "1",
+        title: "The Crown Palace",
+        image: "crown-palace",
+        paragraphs: ["The seat of Atlantis's sovereign and the centre of imperial government. Its highest tower bears the Golden Trident, symbolising dominion over the Seven Waters. The palace contains the royal throne room, imperial archives and the private gardens of the ruling dynasty."]
+      },
+      {
+        kicker: "The eleven landmarks",
+        plate: "2",
+        title: "The High Terrace",
+        image: "high-terrace",
+        paragraphs: ["A prestigious district of elevated gardens, noble residences, fountains and ceremonial courtyards. Here, the wealthiest families of Atlantis live beneath the shadow of the Crown Palace."]
+      },
+      {
+        kicker: "The eleven landmarks",
+        plate: "3",
+        title: "The Grand Gate",
+        image: "grand-gate",
+        paragraphs: ["The monumental entrance to the royal precinct, approached by broad marble staircases. Guarded by the sovereign's elite soldiers, it serves as the principal ceremonial gateway for foreign dignitaries and victorious admirals."]
+      },
+      {
+        kicker: "The eleven landmarks",
+        plate: "4",
+        title: "The Temple District",
+        image: "temple-district",
+        paragraphs: ["A sacred quarter filled with domed sanctuaries, ancient monuments and towering colonnades. Its priests preserve the city's oldest traditions, some predating the founding of Atlantis itself."]
+      },
+      {
+        kicker: "The eleven landmarks",
+        plate: "5",
+        title: "The Lower City",
+        image: "lower-city",
+        paragraphs: ["The bustling heart of everyday life. Markets, workshops, inns and residences fill its winding streets. Here, merchants from distant kingdoms exchange spices, precious metals, textiles and maritime inventions."]
+      },
+      {
+        kicker: "The eleven landmarks",
+        plate: "6",
+        title: "The Harbour",
+        image: "harbour",
+        paragraphs: ["The commercial lifeline of Atlantis. Protected by natural cliffs and fortified piers, its docks accommodate trading vessels, fishing boats and the crimson-sailed ships of the royal fleet."]
+      },
+      {
+        kicker: "The eleven landmarks",
+        plate: "7",
+        title: "The Bridge of Tides",
+        image: "bridge-of-tides",
+        paragraphs: ["An extraordinary feat of ancient engineering, stretching across the waters toward the capital. Decorated with colossal statues of legendary rulers and warriors, it serves as both a major trade route and a symbol of imperial strength."]
+      },
+      {
+        kicker: "The eleven landmarks",
+        plate: "8",
+        title: "The Sunset Isles",
+        image: "sunset-isles",
+        paragraphs: ["A scattered archipelago to the west, famous for its spectacular sunsets, secluded estates and ancient watchtowers. Some islands contain ruins belonging to civilisations older than Atlantis."]
+      },
+      {
+        kicker: "The eleven landmarks",
+        plate: "9",
+        title: "The Trident Isle",
+        image: "trident-isle",
+        paragraphs: ["A small, rocky island in the Atlantis Expanse, traditionally regarded as sacred. Legend holds that the first sovereign of Atlantis received the Golden Trident here."]
+      },
+      {
+        kicker: "The eleven landmarks",
+        plate: "10",
+        title: "The Western Fort",
+        image: "western-fort",
+        paragraphs: ["A formidable coastal fortress overlooking the western approaches. Its garrison protects the capital against invading fleets and guards the treacherous passages through the Shattered Reefs."]
+      },
+      {
+        kicker: "The eleven landmarks",
+        plate: "11",
+        title: "The Scholars' Reach",
+        image: "scholars-reach",
+        paragraphs: ["A secluded academic sanctuary dedicated to astronomy, navigation, engineering and the study of ancient knowledge. Its libraries contain charts of forgotten seas and records dating back thousands of years."]
+      },
+      {
+        kicker: "The World",
+        title: "Beyond the capital",
+        image: "beyond",
+        paragraphs: [
+          "Three great natural features define the surrounding kingdom.",
+          "The Serpent Mountains form a vast defensive barrier to the northeast. Their jagged peaks contain mineral deposits, hidden valleys and the sources of the rivers feeding Atlantis's aqueducts.",
+          "The Shattered Reefs are a dangerous labyrinth of rocky islands and submerged formations to the west. While treacherous to unfamiliar sailors, their narrow passages provide a natural defence against enemy fleets.",
+          "The Atlantis Expanse is the enormous sea upon which Auremor's prosperity depends. Its trade routes connect the capital to distant kingdoms, while the royal navy maintains control of the surrounding waters."
+        ]
+      },
+      {
+        kicker: "The World",
+        title: "The character of the city",
+        image: "character",
+        paragraphs: [
+          "Atlantis is a place where grandeur and everyday life coexist.",
+          "At dawn, sunlight catches the golden domes of the Crown Palace while fishermen return to the harbour with their catches. By midday, the Lower City is alive with commerce, the ringing of craftsmen's hammers and the cries of merchants.",
+          "At sunset, the entire capital turns golden. The waterfalls shimmer beneath the fading light, crimson banners flutter from the palace towers, and the great statues along the Bridge of Tides cast enormous shadows across the water. By night, thousands of lanterns illuminate the terraces, transforming Atlantis into a constellation of lights suspended between the mountains and the sea.",
+          "But beneath its splendour lies a city shaped by conquest, political intrigue, dynastic rivalries and ancient secrets. Its walls have witnessed the rise and fall of emperors. Its harbours have welcomed explorers returning from the edges of the known world. And somewhere beneath its oldest foundations lie chambers that have remained sealed since the founding of the kingdom.",
+          "Atlantis is not simply the capital of an empire. It is the physical embodiment of that empire's ambition: to build something so extraordinary that the world will remember it long after its rulers have turned to dust."
+        ]
+      },
+      {
+        kicker: "The Court",
+        title: "Pingu — The Queen",
+        image: "pingu",
+        paragraphs: [
+          "A tiny, armoured queen with a pink bow in her hair, holding a golden sceptre. She stands on a pile of gold coins, looking utterly terrifying despite being very small. Her eyes burn like forge-fires. Behind her, a massive throne made of skulls. Regal, commanding, absurdly cute.",
+          "Her Majesty Pingu, Queen of Shattered Souls, Grand Regent of Atlantis, Overlord of the Abyss. Born with a deadly stare and a burning desire to make everything pink or mermaid-y. She has razed kingdoms for sport, once executed a general for coughing during her war council, and demands her Capri Suns be kept at exactly 20 degrees. Touch her vault and die."
+        ]
+      },
+      {
+        kicker: "The Court",
+        title: "Shrek — The Idiot",
+        image: "shrek",
+        paragraphs: [
+          "A massive, scarred soldier with a glass eye and a face like a roadmap of violence. He wears dark, battered armour and carries a broken sword. Despite his terrifying appearance, his expression is blank, almost innocent, like a confused puppy. A small pink bow is somehow pinned to his shoulder.",
+          "Shrek. The most dangerous man in the Abyss. The dragonslayer. The vomit-rider. The man who killed an ancient wyrm with a broken sword and a stupid idea. He is also a complete and utter idiot who once saluted a brick wall for three hours. He is loyal to the Queen in a way that borders on religious devotion. He is currently growing tomatoes in her private garden and naming them Capri Sun."
+        ]
+      },
+      {
+        kicker: "The Court",
+        title: "General Grimtooth — Master of War",
+        image: "grimtooth",
+        paragraphs: [
+          "General Grimtooth has fought in a thousand wars, witnessed the rise and fall of empires, and commanded legions of demons. He has also spent the last few years living in quiet terror of the Queen's promise to turn his skull into a cup. He has recently retired and is now Master of War, though he is not sure if that is an honour or a punishment."
+        ]
+      },
+      {
+        kicker: "The Court",
+        title: "Vhorakth — The Dragon",
+        image: "vhorakth",
+        paragraphs: [
+          "The Wyrm of the Ashen Pass. Ancient beyond measure. Devourer of Cinderfall. Terror of the Abyss. It slept on its hoard for five thousand years, woke up hungry, followed the scent of gold to a dying mining town, and then made the fatal mistake of swallowing Shrek. It is currently deceased, its corpse is still rotting in the vault, and it took three years to get the smell out."
+        ]
+      },
+      {
+        kicker: "Bestiary",
+        title: "The Six-Legged Deer",
+        image: "deer",
+        paragraphs: ["A gentle creature found in the crystal forests of Starfruit. Grazes on bioluminescent moss. Tastes like honey and sunlight, according to Shrek."]
+      },
+      {
+        kicker: "Bestiary",
+        title: "The Hydra",
+        image: "hydra",
+        paragraphs: ["A multi-headed serpent. One was strangled with its own tail by Shrek. The other demons are still not sure how he managed it."]
+      },
+      {
+        kicker: "Bestiary",
+        title: "The Celestial Geese",
+        image: "geese",
+        paragraphs: ["A flock of aggressive waterfowl from the celestial realm. Once defeated an entire legion of demon warriors. The Queen has ordered them exterminated on sight."]
+      },
+      {
+        kicker: "Bestiary",
+        title: "The Capri Sun",
+        image: "capri-sun",
+        paragraphs: ["Not technically a creature, but highly prized by the Queen. Comes in multiple flavours. Pacific Cooler is the only acceptable one."]
+      },
+      {
+        kicker: "Artefacts",
+        title: "The Crown of Atlantis",
+        image: "crown",
+        paragraphs: ["The crown of the High Sovereign of Atlantis. Currently worn by Pingu. It was previously worn by her aunt, who was a disaster. The crown is said to bring wisdom, power, and an uncontrollable desire to make everything pink."]
+      },
+      {
+        kicker: "Artefacts",
+        title: "The Pink Bow",
+        image: "bow",
+        paragraphs: ["The Queen's most prized possession. It has survived battles, dragon attacks, and at least one near-death experience. It was lost during the Fall of the Obsidian Fortress and replaced by Shrek, who personally hunted down a new one. It is still slightly wonky."]
+      }
+    ];
+
+    const bookPage = document.getElementById("book-page");
+    const bookCount = document.getElementById("book-count");
+    const bookPrev = document.getElementById("book-prev");
+    const bookNext = document.getElementById("book-next");
+    let bookIndex = 0;
+    let bookDir = "next";
+
+    function plateSources(name) {
+      return ["png", "jpg", "jpeg", "webp"].map((ext) => "images/" + name + "." + ext);
+    }
+
+    function addPlate(parent, name, caption) {
+      const figure = document.createElement("figure");
+      figure.className = "plate";
+      const img = document.createElement("img");
+      img.alt = caption || name;
+      const sources = plateSources(name);
+      let sourceIndex = 0;
+      img.addEventListener("error", () => {
+        sourceIndex += 1;
+        if (sourceIndex < sources.length) {
+          img.src = sources[sourceIndex];
+          return;
+        }
+        img.remove();
+        if (name === "atlantis") {
+          const empty = document.createElement("div");
+          empty.className = "plate-empty";
+          empty.setAttribute("role", "img");
+          empty.setAttribute("aria-label", caption || "Atlantis");
+          figure.insertBefore(empty, figure.firstChild);
+          return;
+        }
+        figure.remove();
+      });
+      img.src = sources[0];
+      figure.appendChild(img);
+      if (caption) {
+        const cap = document.createElement("figcaption");
+        cap.textContent = caption;
+        figure.appendChild(cap);
+      }
+      parent.appendChild(figure);
+    }
+
+    function renderBook() {
+      const page = bookPages[bookIndex];
+      bookPage.innerHTML = "";
+      const kicker = document.createElement("p");
+      kicker.className = "book-kicker";
+      kicker.textContent = page.plate ? page.kicker + "  ·  " + page.plate : page.kicker;
+      const title = document.createElement("h2");
+      title.className = "book-title";
+      title.textContent = page.title;
+      bookPage.append(kicker, title);
+      if (page.image) addPlate(bookPage, page.image, page.caption);
+      if (page.subtitle) {
+        const sub = document.createElement("p");
+        sub.className = "book-sub";
+        sub.textContent = page.subtitle;
+        bookPage.appendChild(sub);
+      }
+      page.paragraphs.forEach((text) => {
+        const copy = document.createElement("p");
+        copy.className = "book-copy";
+        copy.textContent = text;
+        bookPage.appendChild(copy);
+      });
+      if (page.warning) {
+        const warn = document.createElement("p");
+        warn.className = "book-warn";
+        warn.textContent = page.warning;
+        bookPage.appendChild(warn);
+      }
+      bookCount.textContent = (bookIndex + 1) + " / " + bookPages.length;
+      bookPrev.disabled = bookIndex === 0;
+      bookNext.disabled = bookIndex === bookPages.length - 1;
+      bookPage.scrollTop = 0;
+      if (motionOk) {
+        bookPage.classList.remove("turn-next", "turn-prev");
+        void bookPage.offsetWidth;
+        bookPage.classList.add(bookDir === "prev" ? "turn-prev" : "turn-next");
+      }
+    }
+
+    function turnBook(step) {
+      const next = bookIndex + step;
+      if (next < 0 || next >= bookPages.length) return;
+      bookDir = step < 0 ? "prev" : "next";
+      bookIndex = next;
+      renderBook();
+    }
+
+    bookPrev.addEventListener("click", () => turnBook(-1));
+    bookNext.addEventListener("click", () => turnBook(1));
+    bookPage.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowRight") turnBook(1);
+      if (event.key === "ArrowLeft") turnBook(-1);
+    });
+    let bookTouchX = 0;
+    bookPage.addEventListener("touchstart", (event) => {
+      bookTouchX = event.changedTouches[0].clientX;
+    }, { passive: true });
+    bookPage.addEventListener("touchend", (event) => {
+      const delta = event.changedTouches[0].clientX - bookTouchX;
+      if (delta > 48) turnBook(-1);
+      if (delta < -48) turnBook(1);
+    }, { passive: true });
+    renderBook();
+  </script>
+  <script>
+    /* Pingu: The Demon's Gambit
+       Room text and puzzles live in ROOMS and ITEMS. To add a room:
+       1. Copy a room entry. Point exits at other room ids
+          (north, east, south, west, up, down).
+       2. Add that id to freshItems() with an array of item ids found there.
+       3. Add a scene function in SCENES, using the same name as room.art.
+       examine values can be a string, or a function that returns a string. */
+    (function () {
+      const INK = {
+        navy: "#141a2e",
+        deep: "#0c101c",
+        teal: "#3d6b66",
+        tealDark: "#1e3330",
+        water: "#243848",
+        orange: "#c46a32",
+        orangeDark: "#8a4320",
+        brown: "#3a2418",
+        brownDeep: "#2a1c14",
+        brownLit: "#5c3a28",
+        cream: "#e6d7b8",
+        creamDim: "#b7a88a",
+        stone: "#5c564c",
+        black: "#1a1614",
+        rose: "#b88896",
+        shadow: "#241c28"
+      };
+
+      const DIR_ORDER = ["north", "east", "south", "west", "up", "down"];
+      const DIR_LETTER = { north: "N", east: "E", south: "S", west: "W", up: "U", down: "D" };
+      const DIR_ARROW = { north: "↑", east: "→", south: "↓", west: "←", up: "U", down: "D" };
+      const DIRS = {
+        n: "north", north: "north",
+        e: "east", east: "east",
+        s: "south", south: "south",
+        w: "west", west: "west",
+        u: "up", up: "up",
+        d: "down", down: "down"
+      };
+
+      const HELP = "Commands: look, examine, take, drop, inventory, talk, give, use, go north.\nDirections: n, e, s, w, the arrow keys, or 1, 2, 3 for the exits in the hint bar.\nThe aunt's guards can catch you three times.";
+
+      const ITEMS = {
+        capri: {
+          name: "Capri Sun",
+          aliases: ["capri sun", "capri", "pouch", "juice", "sun"],
+          here: "A Capri Sun sits on the scarred table.",
+          take: "You take the Capri Sun. The foil is cold.",
+          detail: "Foil, cold, and very illegal. It smells like Pacific Cooler."
+        },
+        key: {
+          name: "rusted key",
+          aliases: ["rusted key", "key", "iron key"],
+          here: "A rusted key lies on the stones.",
+          take: "You take the rusted key. It smells like the well.",
+          detail: "Rusted. The bit is shaped like a small gate."
+        },
+        pearl: {
+          name: "grey pearl",
+          aliases: ["grey pearl", "pearl", "token"],
+          here: "A grey pearl rests on the ground.",
+          take: "You take the grey pearl.",
+          detail: "Grey, heavy, and slightly warm."
+        },
+        crown: {
+          name: "crown",
+          aliases: ["crown", "the crown"],
+          here: "The crown rests on a stone peg.",
+          take: "You take the crown. It is lighter than a kingdom ought to be.",
+          detail: "Gold gone dim. It is sized for a very small head."
+        }
+      };
+
+      const ROOMS = {
+        cottage: {
+          name: "The Cottage",
+          art: "cottage",
+          desc: "Pingu's hideout is one low room and a fire that is mostly smoke. A pink bow hangs on a nail. She stands on a stool, tiny and already out of patience. North, the door, and past it the trees.",
+          exits: { north: "forest" },
+          pingu: "Are the Capri Suns secure? Good. Continue.",
+          talk: "The crown is in my house. She is borrowing it. We are done being polite.",
+          examine: {
+            fire: "Mostly smoke. One coal ticks.",
+            bow: "Pink. Slightly bent. You leave it on the nail.",
+            table: "Knife marks, and a ring where a pouch usually sits.",
+            stool: "Short. She does not offer it.",
+            pingu: "Tiny. A pink bow. The stare of someone counting your mistakes.",
+            door: "North. The latch is a formality."
+          }
+        },
+        forest: {
+          name: "The Forest Path",
+          art: "forest",
+          desc: "A packed dirt track runs between black-green trees. East, the path opens toward chimney smoke. South, the cottage window is a small warm square.",
+          exits: { south: "cottage", east: "village" },
+          pingu: "You're being very slow. I could have conquered three kingdoms by now.",
+          talk: "Less scenery. More treason.",
+          examine: {
+            trees: "The trunks are close and wet.",
+            roots: "One root pins a scrap of parchment: THE POOLS REMEMBER WHAT THE QUEEN FORBID.",
+            parchment: "THE POOLS REMEMBER WHAT THE QUEEN FORBID.",
+            path: "Mud, bootprints, and one very small pair.",
+            track: "Mud, bootprints, and one very small pair."
+          }
+        },
+        village: {
+          name: "The Village of Cinderfall",
+          art: "village",
+          desc: "Cinderfall is wet stone, wet thatch, and a well in the square. A notice is nailed to the well. People study their shoes as you pass. North is a bridge. West is the forest.",
+          exits: { west: "forest", north: "bridge" },
+          pingu: "They look like people who would ban juice. Keep walking.",
+          talk: "Ask the well, not the neighbours. The neighbours have chosen cowardice.",
+          examine: {
+            notice: "Capri Suns: banned. Mermaids: banned. Monarchy: pending. Smaller print: the well keeps what the gates forgot.",
+            houses: "Shutters closed. One window leaks a burnt-orange light.",
+            square: "Cobbles, puddles, and a careful silence.",
+            well: function () {
+              if (state.flags.well) return "The well is dark water and a new rope.";
+              state.flags.well = true;
+              state.roomItems.village.push("key");
+              return "You shift the new rope. A rusted key lies in the wet stone.";
+            }
+          }
+        },
+        bridge: {
+          name: "The Bridge of Whispers",
+          art: "bridge",
+          desc: "The bridge is narrow stone. Water moves under it and makes no sound. A mermaid statue stands at the middle, mouth open, hands cupped. The fortress darkens the north end. The village is south.",
+          exits: { south: "village", north: "gates" },
+          pingu: "If the statue talks, answer it. I don't negotiate with stone.",
+          talk: "Answer it properly. I am not swimming.",
+          examine: {
+            water: "It moves. It refuses to sound like water.",
+            bridge: "Old stone. Newer fear.",
+            statue: function () { askStatue(); return state.note; },
+            mermaid: function () { askStatue(); return state.note; }
+          }
+        },
+        gates: {
+          name: "The Outer Gates",
+          art: "gates",
+          desc: "A wide metal gate stands shut in a wall of obsidian. One guard in an orange tabard watches a puddle as if it owes him something. He looks thirsty in a way the law does not allow. The bridge is south.",
+          exits: { south: "bridge" },
+          pingu: "I want that crown. Don't get us killed.",
+          talk: "Bribe him with the pouch. Then we are finished being nice.",
+          examine: {
+            gate: "Iron, tall, and shut. The real door is the one behind the guard.",
+            door: "An inner door, locked, just past the guard's shoulder.",
+            guard: "Orange tabard. Slouch. Eyes on the puddle, and on your hands.",
+            puddle: "Brown water. He is guarding it with his whole career.",
+            wall: "Obsidian. It drinks the light and gives none back.",
+            fortress: "Her house. Currently misfiled under the aunt."
+          }
+        },
+        dungeon: {
+          name: "The Dungeon",
+          art: "dungeon",
+          desc: "Cells, damp straw, and little light. An iron maiden stands against the wall, too clean for this room. A stair climbs toward the throne. South returns to the gate.",
+          exits: { south: "gates", up: "throne" },
+          pingu: "This was my basement. She has ruined the ambience.",
+          talk: "Empty hands up that stair would be a hobby. Don't take up hobbies.",
+          examine: {
+            cells: "Empty. The straw remembers other guests.",
+            straw: "Damp. You leave it.",
+            stair: "It climbs toward warmer air and worse company.",
+            "iron maiden": function () { openMaiden(); return state.note; },
+            maiden: function () { openMaiden(); return state.note; },
+            wall: function () { openMaiden(); return state.note; },
+            "back plate": function () { openMaiden(); return state.note; }
+          }
+        },
+        vault: {
+          name: "The Secret Vault",
+          art: "vault",
+          desc: "A low vault under the fortress, dry and secret. A crate of Capri Suns sweats in the corner, stamped in chipped paint. The stair back up is the only honest exit.",
+          exits: { up: "dungeon" },
+          pingu: "There. That is mine. Pick it up.",
+          talk: "Take the crown. If you drop it, I will end you, and then the aunt.",
+          examine: {
+            crate: "Royal reserve. Pingu goes very still. The crate stays.",
+            peg: "Stone, and proud of what it was holding.",
+            stair: "Up, into the basement you already dislike.",
+            suns: "A crate of them. Not for the walk.",
+            "capri suns": "A crate of them. Not for the walk."
+          }
+        },
+        throne: {
+          name: "The Throne Room",
+          art: "throne",
+          desc: "The throne room is long and cold. The aunt sits the throne as if she has already sold it. Guards watch you. The crown is absent from her head.",
+          exits: { down: "dungeon" },
+          pingu: "If this works, I'll make you my official royal Capri Sun carrier.",
+          talk: "Put it on me. In front of her. That is the whole plan.",
+          examine: {
+            aunt: "A woman in a dark dress, already bored of you. The law sits in her lap like a pet.",
+            throne: "Too large for the person it was built for. She is using it anyway.",
+            guards: "Orange tabards. Hands near hilts. They are waiting for a reason.",
+            guard: "He is hoping you will provide the reason.",
+            law: "A parchment abolishing the monarchy. It still needs a monarch's seal to mean anything. She has not noticed the joke."
+          }
+        }
+      };
+
+      const adventure = document.getElementById("adventure");
+      const titleScreen = document.getElementById("adv-title");
+      const nameScreen = document.getElementById("adv-name");
+      const playScreen = document.getElementById("adv-play");
+      const endScreen = document.getElementById("adv-end");
+      const titleCanvas = document.getElementById("title-canvas");
+      const sceneCanvas = document.getElementById("scene");
+      const endCanvas = document.getElementById("end-canvas");
+      const logEl = document.getElementById("adv-log");
+      const noteEl = document.getElementById("adv-note");
+      const pinguEl = document.getElementById("adv-pingu");
+      const exitsEl = document.getElementById("adv-exits");
+      const hintsEl = document.getElementById("adv-hints");
+      const statusEl = document.getElementById("adv-status");
+      const cmdForm = document.getElementById("cmd-form");
+      const cmd = document.getElementById("cmd");
+      const nameForm = document.getElementById("name-form");
+      const nameInput = document.getElementById("name-input");
+      const endKicker = document.getElementById("end-kicker-pix");
+      const endCopy = document.getElementById("end-copy");
+
+      let state = null;
+      let mode = "title";
+
+      function freshItems() {
+        return {
+          cottage: ["capri"],
+          forest: [],
+          village: [],
+          bridge: [],
+          gates: [],
+          dungeon: [],
+          vault: ["crown"],
+          throne: []
+        };
+      }
+
+      function fresh() {
+        state = {
+          room: "cottage",
+          name: "",
+          alert: 0,
+          seen: {},
+          flags: {},
+          inv: [],
+          roomItems: freshItems(),
+          note: "",
+          pinguLine: "",
+          riddle: false
+        };
+        nameInput.value = "";
+        cmd.value = "";
+      }
+
+      function norm(value) {
+        return String(value).toLowerCase().replace(/[^a-z0-9]+/g, " ").replace(/\s+/g, " ").trim();
+      }
+
+      function article(name) {
+        return (/^[aeiou]/i.test(name) ? "an " : "a ") + name;
+      }
+
+      function listNames(names) {
+        const labelled = names.map(article);
+        if (labelled.length === 1) return labelled[0];
+        return labelled.slice(0, -1).join(", ") + " and " + labelled[labelled.length - 1];
+      }
+
+      function has(id) {
+        return state.inv.indexOf(id) !== -1;
+      }
+
+      function matchItem(phrase, ids) {
+        const n = norm(phrase);
+        let best = null;
+        let bestLen = 0;
+        ids.forEach((id) => {
+          const names = [ITEMS[id].name].concat(ITEMS[id].aliases);
+          names.forEach((alias) => {
+            const a = norm(alias);
+            if (a && (n === a || n.indexOf(a) !== -1) && a.length > bestLen) {
+              best = id;
+              bestLen = a.length;
+            }
+          });
+        });
+        return best;
+      }
+
+      function matchKey(phrase, dict) {
+        const n = norm(phrase);
+        let best = null;
+        let bestLen = 0;
+        Object.keys(dict).forEach((key) => {
+          const a = norm(key);
+          if (a && n.indexOf(a) !== -1 && a.length > bestLen) {
+            best = key;
+            bestLen = a.length;
+          }
+        });
+        return best;
+      }
+
+      function exitsFor(id) {
+        const exits = Object.assign({}, ROOMS[id].exits);
+        if (id === "gates" && state.flags.guardPaid && state.flags.doorOpen) exits.north = "dungeon";
+        if (id === "dungeon" && state.flags.passage) exits.down = "vault";
+        return exits;
+      }
+
+      function exitNames() {
+        const exits = exitsFor(state.room);
+        return DIR_ORDER.filter((dir) => exits[dir]);
+      }
+
+      function asDir(input) {
+        let cleaned = input.replace(/^(go|walk|move|head|run|travel)\s+/, "");
+        cleaned = cleaned.replace(/^(to|the|through|into)\s+/, "");
+        cleaned = cleaned.replace(/^(to|the)\s+/, "");
+        return DIRS[cleaned] || null;
+      }
+
+      function showOnly(which) {
+        titleScreen.hidden = which !== "title";
+        nameScreen.hidden = which !== "name";
+        playScreen.hidden = which !== "play";
+        endScreen.hidden = which !== "end";
+      }
+
+      function drawPingu(px, x, y, s) {
+        const scale = s || 1;
+        const p = (dx, dy, w, h, c) => px(x + dx * scale, y + dy * scale, w * scale, h * scale, c);
+        p(3, 0, 8, 2, INK.black);
+        p(2, 2, 10, 4, INK.black);
+        p(10, 0, 4, 3, INK.rose);
+        p(9, 2, 2, 2, INK.rose);
+        p(13, 1, 2, 2, INK.rose);
+        p(4, 3, 2, 2, INK.cream);
+        p(8, 3, 2, 2, INK.cream);
+        p(6, 5, 2, 1, INK.orange);
+        p(1, 6, 12, 8, INK.black);
+        p(4, 7, 6, 6, INK.cream);
+        p(2, 14, 4, 2, INK.orange);
+        p(8, 14, 4, 2, INK.orange);
+      }
+
+      function drawDemon(px, x, y, s) {
+        const scale = s || 1;
+        const p = (dx, dy, w, h, c) => px(x + dx * scale, y + dy * scale, w * scale, h * scale, c);
+        p(2, 0, 2, 3, INK.shadow);
+        p(8, 0, 2, 3, INK.shadow);
+        p(2, 2, 8, 6, INK.shadow);
+        p(3, 4, 2, 2, INK.orange);
+        p(7, 4, 2, 2, INK.orange);
+        p(1, 8, 10, 14, INK.shadow);
+        p(0, 9, 2, 8, INK.shadow);
+        p(10, 9, 2, 8, INK.shadow);
+        p(2, 22, 3, 3, INK.black);
+        p(7, 22, 3, 3, INK.black);
+      }
+
+      function dither(px, x, y, w, h, a, b) {
+        for (let yy = 0; yy < h; yy += 1) {
+          for (let xx = 0; xx < w; xx += 1) {
+            px(x + xx, y + yy, 1, 1, ((xx + yy) & 1) ? b : a);
+          }
+        }
+      }
+
+      function drawHouse(px, x) {
+        px(x, 30, 36, 26, INK.brown);
+        px(x + 4, 16, 28, 16, INK.orangeDark);
+        px(x + 8, 36, 8, 10, INK.orange);
+        px(x + 22, 38, 8, 18, INK.black);
+      }
+
+      const SCENES = {
+        cottage: function (px) {
+          px(0, 0, 160, 90, INK.black);
+          px(0, 0, 160, 58, INK.brown);
+          px(8, 10, 36, 28, INK.navy);
+          dither(px, 10, 12, 32, 22, INK.water, INK.teal);
+          px(24, 10, 3, 28, INK.brownLit);
+          px(8, 22, 36, 3, INK.brownLit);
+          px(112, 40, 28, 18, INK.orangeDark);
+          px(118, 30, 16, 16, INK.orange);
+          px(122, 24, 8, 10, INK.cream);
+          px(0, 58, 160, 32, INK.brownDeep);
+          px(48, 62, 40, 6, INK.brownLit);
+          px(52, 68, 4, 14, INK.brown);
+          px(80, 68, 4, 14, INK.brown);
+          if (state.roomItems.cottage.indexOf("capri") !== -1) {
+            px(62, 54, 10, 8, INK.orange);
+            px(64, 52, 6, 3, INK.cream);
+          }
+          drawPingu(px, 100, 42, 2);
+        },
+        forest: function (px) {
+          px(0, 0, 160, 90, INK.navy);
+          px(124, 8, 16, 16, INK.cream);
+          for (let i = 0; i < 6; i += 1) {
+            const x = 4 + i * 26;
+            px(x + 8, 28, 6, 30, INK.brown);
+            dither(px, x, 16, 22, 22, INK.tealDark, INK.teal);
+          }
+          px(0, 64, 160, 26, INK.brownDeep);
+          dither(px, 46, 64, 68, 26, INK.brownLit, INK.brown);
+        },
+        village: function (px) {
+          px(0, 0, 160, 54, INK.navy);
+          px(0, 54, 160, 36, INK.brownDeep);
+          dither(px, 0, 54, 160, 10, INK.brown, INK.brownDeep);
+          drawHouse(px, 6);
+          drawHouse(px, 62);
+          drawHouse(px, 116);
+          px(72, 66, 20, 12, INK.stone);
+          px(76, 62, 12, 6, INK.teal);
+          px(80, 50, 2, 16, INK.brownLit);
+          px(74, 50, 14, 2, INK.brownLit);
+        },
+        bridge: function (px) {
+          px(0, 0, 160, 90, INK.navy);
+          dither(px, 0, 40, 160, 50, INK.water, "#1a3040");
+          dither(px, 0, 42, 160, 16, INK.stone, INK.brown);
+          px(0, 40, 160, 3, INK.brownLit);
+          px(74, 24, 12, 18, INK.creamDim);
+          px(76, 16, 8, 10, INK.cream);
+          px(68, 28, 8, 3, INK.creamDim);
+          px(84, 28, 8, 3, INK.creamDim);
+          px(76, 40, 8, 8, INK.teal);
+        },
+        gates: function (px) {
+          px(0, 0, 160, 90, INK.deep);
+          dither(px, 0, 12, 46, 66, INK.black, INK.shadow);
+          dither(px, 114, 12, 46, 66, INK.black, INK.shadow);
+          px(46, 26, 68, 52, INK.brown);
+          px(52, 32, 56, 46, INK.brownDeep);
+          for (let y = 34; y < 76; y += 8) px(52, y, 56, 2, INK.brownLit);
+          px(78, 32, 3, 46, INK.brownLit);
+          if (!state.flags.guardPaid) {
+            px(98, 46, 12, 16, INK.orange);
+            px(100, 40, 8, 8, INK.cream);
+            px(98, 62, 4, 8, INK.brown);
+            px(106, 62, 4, 8, INK.brown);
+          }
+          px(0, 78, 160, 12, INK.brownDeep);
+        },
+        dungeon: function (px) {
+          px(0, 0, 160, 90, INK.black);
+          px(0, 72, 160, 18, INK.brownDeep);
+          for (let x = 16; x < 72; x += 8) px(x, 16, 3, 56, INK.stone);
+          px(12, 16, 62, 4, INK.stone);
+          px(102, 20, 36, 52, INK.stone);
+          if (state.flags.passage) px(108, 32, 24, 34, INK.deep);
+          else px(108, 28, 24, 38, INK.brown);
+          px(116, 34, 8, 8, INK.black);
+          px(86, 18, 4, 12, INK.brownLit);
+          px(84, 10, 8, 8, INK.orange);
+        },
+        vault: function (px) {
+          px(0, 0, 160, 90, INK.navy);
+          px(0, 66, 160, 24, INK.brownDeep);
+          px(16, 42, 38, 26, INK.orangeDark);
+          px(16, 42, 38, 6, INK.orange);
+          px(22, 52, 26, 8, INK.cream);
+          px(100, 52, 6, 18, INK.stone);
+          if (state.roomItems.vault.indexOf("crown") !== -1) {
+            px(90, 40, 22, 8, INK.orange);
+            px(94, 34, 14, 8, INK.cream);
+            px(98, 30, 6, 6, INK.orange);
+          }
+        },
+        throne: function (px) {
+          px(0, 0, 160, 90, INK.deep);
+          dither(px, 68, 28, 24, 62, INK.orangeDark, INK.brownLit);
+          px(56, 14, 48, 34, INK.brown);
+          px(62, 20, 36, 22, INK.brownLit);
+          px(50, 12, 60, 6, INK.orange);
+          px(72, 18, 14, 20, INK.shadow);
+          px(74, 12, 10, 8, INK.creamDim);
+          px(18, 40, 12, 26, INK.orange);
+          px(130, 40, 12, 26, INK.orange);
+          px(0, 78, 160, 12, INK.black);
+        },
+        epilogue: function (px) {
+          px(0, 0, 160, 90, INK.deep);
+          dither(px, 68, 28, 24, 62, INK.orangeDark, INK.brownLit);
+          px(56, 14, 48, 34, INK.brown);
+          px(50, 12, 60, 6, INK.orange);
+          drawPingu(px, 64, 8, 2);
+          px(78, 28, 8, 6, INK.orange);
+          drawDemon(px, 112, 40, 1);
+          px(0, 78, 160, 12, INK.black);
+        },
+        gameover: function (px) {
+          px(0, 0, 160, 90, INK.deep);
+          dither(px, 0, 16, 160, 58, INK.black, INK.shadow);
+          px(48, 28, 64, 48, INK.brownDeep);
+          for (let y = 32; y < 74; y += 8) px(52, y, 56, 2, INK.brown);
+          px(0, 76, 160, 14, INK.black);
+        },
+        title: function (px) {
+          px(0, 0, 160, 90, INK.deep);
+          px(118, 8, 18, 18, INK.cream);
+          dither(px, 0, 62, 160, 28, INK.navy, INK.black);
+          drawPingu(px, 50, 14, 3);
+        }
+      };
+
+      function drawScene(canvas, name) {
+        const ctx = canvas.getContext("2d");
+        canvas.width = 160;
+        canvas.height = 90;
+        ctx.imageSmoothingEnabled = false;
+        const px = (x, y, w, h, color) => {
+          ctx.fillStyle = color;
+          ctx.fillRect(x | 0, y | 0, w | 0, h | 0);
+        };
+        px(0, 0, 160, 90, INK.navy);
+        (SCENES[name] || SCENES.title)(px);
+      }
+
+      function roomParagraphs() {
+        const room = ROOMS[state.room];
+        const lines = [room.desc];
+        state.roomItems[state.room].forEach((id) => {
+          if (ITEMS[id].here) lines.push(ITEMS[id].here);
+        });
+        if (state.room === "dungeon" && state.flags.passage) {
+          lines.push("The iron maiden's back is open. Stairs go down.");
+        }
+        if (state.room === "gates" && state.flags.guardPaid) {
+          lines.push("The guard has turned to the puddle. He is protecting his pouch.");
+        }
+        if (state.room === "gates" && state.flags.doorOpen) {
+          lines.push("The inner door hangs open to the north.");
+        }
+        return lines.join(" ");
+      }
+
+      function render() {
+        const room = ROOMS[state.room];
+        logEl.innerHTML = "";
+        const name = document.createElement("p");
+        name.className = "room-name";
+        name.textContent = room.name;
+        const desc = document.createElement("p");
+        desc.className = "room-desc";
+        desc.textContent = roomParagraphs();
+        logEl.append(name, desc);
+        noteEl.hidden = !state.note;
+        noteEl.textContent = state.note || "";
+        pinguEl.hidden = !state.pinguLine;
+        pinguEl.textContent = state.pinguLine ? "Pingu: \"" + state.pinguLine + "\"" : "";
+        const names = exitNames();
+        exitsEl.textContent = "Exits: " + (names.length ? names.map((dir) => DIR_LETTER[dir]).join(", ") : "none");
+        logEl.scrollTop = 0;
+
+        hintsEl.innerHTML = "";
+        names.forEach((dir, index) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "hint-btn";
+          button.textContent = DIR_LETTER[dir] + " (" + DIR_ARROW[dir] + ") " + (index + 1);
+          button.addEventListener("click", () => run(dir));
+          hintsEl.appendChild(button);
+        });
+
+        let status = state.name + "    Alert " + state.alert + "/3";
+        if (state.riddle) status += "    The statue waits";
+        statusEl.textContent = status;
+        drawScene(sceneCanvas, room.art);
+      }
+
+      function arrive(id) {
+        state.room = id;
+        state.note = "";
+        state.riddle = false;
+        if (!state.seen[id]) {
+          state.seen[id] = true;
+          state.pinguLine = ROOMS[id].pingu || "";
+        } else {
+          state.pinguLine = "";
+        }
+      }
+
+      function strike() {
+        state.alert += 1;
+        if (state.alert >= 3) {
+          showEnd("lose");
+          return true;
+        }
+        return false;
+      }
+
+      function askStatue() {
+        if (state.flags.riddle) {
+          state.note = "The statue is only stone now. The pearl is already yours. The iron maiden is hollow.";
+          return;
+        }
+        state.riddle = true;
+        state.note = "The statue speaks without sound. \"I was banished from the palace pools. Name the drink the queen abolished.\"";
+      }
+
+      function answerRiddle(input) {
+        if (state.room !== "bridge" || !state.riddle) {
+          state.note = "Nothing here is waiting for an answer.";
+          return;
+        }
+        if (input.indexOf("capri") !== -1 || input.indexOf("pacific cooler") !== -1) {
+          state.riddle = false;
+          state.flags.riddle = true;
+          if (!has("pearl") && state.roomItems.bridge.indexOf("pearl") === -1) state.inv.push("pearl");
+          state.note = "The cupped hands open. A grey pearl drops into your palm. A whisper follows: the iron maiden is hollow.";
+          state.pinguLine = "A pearl. How nautical. Hold onto it.";
+          return;
+        }
+        state.note = "The statue's mouth closes. The water says no.";
+      }
+
+      function openMaiden() {
+        if (state.room !== "dungeon") {
+          state.note = "There is no iron maiden here.";
+          return;
+        }
+        if (state.flags.passage) {
+          state.note = "The stair is already open.";
+          return;
+        }
+        if (!has("pearl")) {
+          state.note = "The back plate shifts a finger's width, then sticks. It wants something that came out of the water.";
+          return;
+        }
+        state.flags.passage = true;
+        state.note = "You press the pearl into a round notch. The maiden's back swings open. A stair drops into the dark.";
+        state.pinguLine = "A secret in my own basement. Rude.";
+      }
+
+      function bribe() {
+        if (state.room !== "gates") {
+          state.note = "There is no guard here worth a pouch.";
+          return;
+        }
+        if (state.flags.guardPaid) {
+          state.note = "He has had his bribe. He will not look at you, in case you want it back.";
+          return;
+        }
+        if (!has("capri")) {
+          state.note = "You have nothing he is willing to risk his post for.";
+          return;
+        }
+        state.inv = state.inv.filter((id) => id !== "capri");
+        state.flags.guardPaid = true;
+        state.note = "You hold out the Capri Sun. The guard's whole posture becomes a secret. He turns to the puddle and stays there.";
+        state.pinguLine = "Acceptable. Continue.";
+      }
+
+      function useKey() {
+        if (!has("key")) {
+          state.note = "You have no key.";
+          return;
+        }
+        if (state.room !== "gates") {
+          state.note = "The key fits nothing here.";
+          return;
+        }
+        if (!state.flags.guardPaid) {
+          state.note = "The guard stands between you and the lock.";
+          return;
+        }
+        if (state.flags.doorOpen) {
+          state.note = "The inner door is already open.";
+          return;
+        }
+        state.flags.doorOpen = true;
+        state.note = "The rusted key turns. The lock complains and gives up.";
+      }
+
+      function crownPingu() {
+        if (!has("crown")) {
+          state.note = "You have no crown.";
+          return;
+        }
+        if (state.room !== "throne") {
+          state.note = "Pingu looks around the room. \"Not here. I want her to see it.\"";
+          return;
+        }
+        showEnd("win");
+      }
+
+      function go(dir) {
+        if (state.room === "gates" && dir === "north" && !state.flags.guardPaid) {
+          const firstBridge = !state.seen.bridge;
+          if (strike()) return;
+          arrive("bridge");
+          state.note = "The guard seizes your coat and walks you backward. You hit the bridge stones. Alert " + state.alert + " of 3.";
+          if (!firstBridge) state.pinguLine = "Don't get us killed.";
+          return;
+        }
+        if (state.room === "gates" && dir === "north" && state.flags.guardPaid && !state.flags.doorOpen) {
+          if (!has("key")) {
+            state.note = "The guard has turned away. The door behind him is locked.";
+            return;
+          }
+          state.flags.doorOpen = true;
+          arrive("dungeon");
+          state.note = "The rusted key turns. The lock complains and gives up.";
+          return;
+        }
+        if (state.room === "dungeon" && dir === "up" && !has("crown")) {
+          if (strike()) return;
+          state.note = "You reach the throne room with empty hands. Horns. Hands. The aunt stays seated while you are thrown back down the stair. Alert " + state.alert + " of 3.";
+          state.pinguLine = "Don't get us killed.";
+          return;
+        }
+        const next = exitsFor(state.room)[dir];
+        if (!next) {
+          state.note = "You can't go that way.";
+          return;
+        }
+        arrive(next);
+      }
+
+      function take(phrase) {
+        if (/pingu/.test(phrase)) {
+          state.note = "Pingu is not a takeable object. She has made this clear.";
+          return;
+        }
+        if (state.room === "vault" && /crate|suns|reserve/.test(phrase)) {
+          state.note = "Pingu's hand closes on your sleeve. The crate stays.";
+          state.pinguLine = "Those are for the reign. Not for the walk.";
+          return;
+        }
+        const id = matchItem(phrase, state.roomItems[state.room]);
+        if (!id) {
+          state.note = "You don't see that here.";
+          return;
+        }
+        state.roomItems[state.room] = state.roomItems[state.room].filter((item) => item !== id);
+        state.inv.push(id);
+        state.note = ITEMS[id].take;
+        if (id === "capri") state.pinguLine = "Are the Capri Suns secure? Good. Continue.";
+        if (id === "crown") state.pinguLine = "Good. Now we finish this.";
+      }
+
+      function drop(phrase) {
+        const id = matchItem(phrase, state.inv);
+        if (!id) {
+          state.note = "You are not carrying that.";
+          return;
+        }
+        if (id === "crown") {
+          state.note = "Pingu makes a small, terrible noise. You keep the crown.";
+          return;
+        }
+        state.inv = state.inv.filter((item) => item !== id);
+        state.roomItems[state.room].push(id);
+        state.note = "You drop the " + ITEMS[id].name + ".";
+      }
+
+      function examine(phrase) {
+        const table = ROOMS[state.room].examine || {};
+        const key = matchKey(phrase, table);
+        if (key) {
+          const value = table[key];
+          state.note = typeof value === "function" ? value() : value;
+          return;
+        }
+        const held = state.roomItems[state.room].concat(state.inv);
+        const id = matchItem(phrase, held);
+        if (id) {
+          state.note = ITEMS[id].detail;
+          return;
+        }
+        if (/pingu/.test(phrase)) {
+          state.note = ROOMS[state.room].examine.pingu || "Tiny. Bow. Impatient.";
+          return;
+        }
+        state.note = "You see nothing worth the time.";
+      }
+
+      function talk(target) {
+        if (/pingu/.test(target)) {
+          state.note = "Pingu: \"" + (ROOMS[state.room].talk || "Continue.") + "\"";
+          return;
+        }
+        if (state.room === "gates" && /guard|soldier/.test(target)) {
+          if (state.flags.guardPaid) {
+            state.note = "He answers the puddle, not you. The pouch crinkles.";
+            return;
+          }
+          state.note = "The guard squints. \"Capri Suns are banned. If I had one, this puddle would need a very long inspection.\"";
+          return;
+        }
+        if (state.room === "bridge" && /statue|mermaid/.test(target)) {
+          askStatue();
+          return;
+        }
+        if (state.room === "village" && /villager|person|someone|local|woman|man|neighbour/.test(target)) {
+          state.note = "A woman speaks into her collar. \"The gates want a bribe the aunt pretends does not exist. I did not say that.\"";
+          return;
+        }
+        if (state.room === "throne" && /aunt|queen/.test(target)) {
+          if (!has("crown")) {
+            state.note = "She lifts one finger. You should already be elsewhere.";
+            return;
+          }
+          state.note = "The aunt sees the crown and goes the colour of old paper. \"The law is nearly finished.\" It is finished when a monarch says so.";
+          return;
+        }
+        if (state.room === "throne" && /guard|soldier/.test(target)) {
+          state.note = "The guard's eyes stay on your hands.";
+          return;
+        }
+        state.note = "No one by that name answers.";
+      }
+
+      function give(itemPhrase, target) {
+        const id = matchItem(itemPhrase, state.inv);
+        if (!id) {
+          state.note = "You are not carrying that.";
+          return;
+        }
+        if (id === "capri" && /guard|soldier/.test(target)) {
+          bribe();
+          return;
+        }
+        if (id === "crown" && /pingu/.test(target)) {
+          crownPingu();
+          return;
+        }
+        if (id === "crown" && /aunt|queen/.test(target)) {
+          state.note = "She puts her hand out. Pingu's foot finds your ankle. The crown stays with you.";
+          return;
+        }
+        if (/pingu/.test(target)) {
+          state.note = "She looks at the offering, then at the work still undone. \"Not that.\"";
+          return;
+        }
+        state.note = "That person does not want it.";
+      }
+
+      function use(phrase) {
+        const on = phrase.match(/^(.+?) on (.+)$/);
+        if (on) {
+          const item = matchItem(on[1], state.inv);
+          if ((item === "pearl" || /pearl/.test(on[1])) && /maiden|wall|plate|notch/.test(on[2])) {
+            openMaiden();
+            return;
+          }
+          if ((item === "key" || /key/.test(on[1])) && /door|lock|gate/.test(on[2])) {
+            useKey();
+            return;
+          }
+          if ((item === "capri" || /capri|pouch|juice/.test(on[1])) && /guard|soldier/.test(on[2])) {
+            bribe();
+            return;
+          }
+          state.note = "That does nothing.";
+          return;
+        }
+        const item = matchItem(phrase, state.inv);
+        if (item === "key") { useKey(); return; }
+        if (item === "pearl") { openMaiden(); return; }
+        if (item === "capri") {
+          state.note = "Drinking the bribe would be bold, and fatal to the plan.";
+          return;
+        }
+        if (item === "crown") { crownPingu(); return; }
+        state.note = "You can't use that here.";
+      }
+
+      function dispatch(input) {
+        if (input === "help" || input === "?") { state.note = HELP; return; }
+        if (input === "inventory" || input === "inv" || input === "i") {
+          state.note = state.inv.length ? "You are carrying " + listNames(state.inv.map((id) => ITEMS[id].name)) + "." : "You are carrying nothing.";
+          return;
+        }
+        if (input === "look" || input === "l" || input === "look around") { state.note = ""; return; }
+        if (input === "wait" || input === "z") {
+          state.note = "Pingu taps one foot. Time does nothing useful.";
+          return;
+        }
+        if (input === "home" || input === "quit") { exitAdventure(); return; }
+        if (/^[1-9]$/.test(input)) {
+          const names = exitNames();
+          const dir = names[Number(input) - 1];
+          if (!dir) state.note = "That number is not an exit.";
+          else go(dir);
+          return;
+        }
+        const dir = asDir(input);
+        if (dir) { go(dir); return; }
+        if (/^(look at|examine|inspect|check|read|x)\s+/.test(input)) {
+          examine(input.replace(/^(look at|examine|inspect|check|read|x)\s+/, ""));
+          return;
+        }
+        if (/^(take|get|grab|pick up|pick)\s+/.test(input)) {
+          take(input.replace(/^(take|get|grab|pick up|pick)\s+/, "").replace(/^(up|the|a|an)\s+/, ""));
+          return;
+        }
+        if (/^(drop|put down)\s+/.test(input)) {
+          drop(input.replace(/^(drop|put down)\s+/, "").replace(/^(the|a|an)\s+/, ""));
+          return;
+        }
+        if (/^(talk to|talk|speak to|speak with|ask)\s+/.test(input)) {
+          talk(input.replace(/^(talk to|talk|speak to|speak with|ask)\s+/, "").replace(/^(the|a|an)\s+/, ""));
+          return;
+        }
+        const given = input.match(/^(?:give|offer|hand)\s+(?:the\s+)?(.+?)\s+to\s+(?:the\s+)?(.+)$/);
+        if (given) { give(given[1], given[2]); return; }
+        if (/^(unlock|open)\s+/.test(input)) {
+          if (/door|lock|gate/.test(input)) { useKey(); return; }
+          if (/maiden|wall|plate/.test(input)) { openMaiden(); return; }
+          state.note = "It stays shut.";
+          return;
+        }
+        if (/^use\s+/.test(input)) { use(input.replace(/^use\s+/, "")); return; }
+        if (/bribe/.test(input)) { bribe(); return; }
+        if (/crown/.test(input) && /pingu/.test(input)) { crownPingu(); return; }
+        if (/^(say|answer|tell her|tell him)\s+/.test(input) || state.riddle) {
+          answerRiddle(input.replace(/^(say|answer|tell her|tell him)\s+/, ""));
+          return;
+        }
+        state.note = "That does nothing.";
+      }
+
+      function run(raw) {
+        const input = norm(raw);
+        if (!input || mode !== "play") return;
+        state.pinguLine = "";
+        dispatch(input);
+        if (mode !== "play") return;
+        render();
+        cmd.focus();
+      }
+
+      function showEnd(kind) {
+        mode = "end";
+        showOnly("end");
+        if (kind === "win") {
+          endKicker.textContent = "The reign";
+          endCopy.textContent = "Pingu sits the throne, bow straight, a Capri Sun sweating in her hand. " + state.name + " stands at her right, official and slightly scorched. The aunt's law is a puddle. The monarchy continues.";
+          drawScene(endCanvas, "epilogue");
+        } else {
+          endKicker.textContent = "Game over";
+          endCopy.textContent = "The demon was captured. Pingu is very disappointed in you. The aunt's reign continues.";
+          drawScene(endCanvas, "gameover");
+        }
+      }
+
+      function showTitle() {
+        fresh();
+        mode = "title";
+        showOnly("title");
+        drawScene(titleCanvas, "title");
+      }
+
+      function showName() {
+        mode = "name";
+        showOnly("name");
+        nameInput.focus();
+      }
+
+      function startPlay(name) {
+        state.name = name;
+        mode = "play";
+        showOnly("play");
+        arrive("cottage");
+        state.note = "Type help if you need the commands.";
+        render();
+        cmd.focus();
+      }
+
+      function cleanName(raw) {
+        const cleaned = String(raw).replace(/[^a-zA-Z0-9 '\-]/g, "").trim().slice(0, 18);
+        return cleaned || "Demon";
+      }
+
+      function exitAdventure() {
+        adventure.hidden = true;
+        document.body.classList.remove("in-game");
+        mode = "title";
+        selectHomeTab("guide");
+      }
+
+      document.getElementById("adv-begin").addEventListener("click", showName);
+      document.getElementById("adv-again").addEventListener("click", showTitle);
+      document.getElementById("adv-home").addEventListener("click", exitAdventure);
+      nameForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        startPlay(cleanName(nameInput.value));
+      });
+      cmdForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const value = cmd.value;
+        cmd.value = "";
+        run(value);
+      });
+      document.addEventListener("keydown", (event) => {
+        if (adventure.hidden) return;
+        if (event.key === "Enter" && mode === "title") {
+          event.preventDefault();
+          showName();
+          return;
+        }
+        if (event.key === "Enter" && mode === "end" && event.target.id !== "adv-home") {
+          event.preventDefault();
+          showTitle();
+          return;
+        }
+        if (mode !== "play") return;
+        if (event.target === cmd && cmd.value) return;
+        const arrows = { ArrowUp: "north", ArrowDown: "south", ArrowLeft: "west", ArrowRight: "east" };
+        if (!arrows[event.key]) return;
+        event.preventDefault();
+        run(arrows[event.key]);
+      });
+    })();
   </script>
 </body>
 </html>
