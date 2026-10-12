@@ -67,7 +67,8 @@
       touch-action: manipulation;
     }
 
-    button:focus-visible {
+    button:focus-visible,
+    a.home-tab:focus-visible {
       outline: 2px solid var(--gold);
       outline-offset: 3px;
     }
@@ -682,12 +683,14 @@
       }
     }
 
-    .home-tabs {
+    .home-tabs,
+    .home-tablist {
       display: flex;
       flex-direction: column;
       gap: 8px;
-      margin-top: 16px;
     }
+
+    .home-tabs { margin-top: 16px; }
 
     .home-tab {
       width: 100%;
@@ -697,9 +700,13 @@
       border: 1.5px solid var(--line);
       border-radius: 16px;
       color: var(--ink);
+      font: inherit;
       font-weight: 700;
       font-size: 0.95rem;
       line-height: 1.35;
+      text-decoration: none;
+      cursor: pointer;
+      touch-action: manipulation;
     }
 
     .home-tab[aria-selected="true"] {
@@ -1124,10 +1131,13 @@
   <main>
     <section class="card" id="start">
       <div class="mascot" aria-hidden="true">🐧</div>
-      <div class="home-tabs" role="tablist" aria-label="Home">
-        <button class="home-tab" id="tab-quiz" type="button" role="tab" aria-selected="true" aria-controls="panel-quiz">The Quiz</button>
-        <button class="home-tab" id="tab-guide" type="button" role="tab" aria-selected="false" aria-controls="panel-guide" tabindex="-1">Pingu: The Demon's Gambit</button>
-        <button class="home-tab" id="tab-book" type="button" role="tab" aria-selected="false" aria-controls="panel-book" tabindex="-1">The Companion Guide</button>
+      <div class="home-tabs">
+        <div class="home-tablist" role="tablist" aria-label="Home">
+          <button class="home-tab" id="tab-quiz" type="button" role="tab" aria-selected="true" aria-controls="panel-quiz">The Quiz</button>
+          <button class="home-tab" id="tab-guide" type="button" role="tab" aria-selected="false" aria-controls="panel-guide" tabindex="-1">Pingu: The Demon's Gambit</button>
+          <button class="home-tab" id="tab-book" type="button" role="tab" aria-selected="false" aria-controls="panel-book" tabindex="-1">The Companion Guide</button>
+        </div>
+        <a class="home-tab" href="https://pingugarden.vercel.app/">Garden</a>
       </div>
       <div id="panel-quiz" class="home-panel" role="tabpanel" aria-labelledby="tab-quiz">
         <p class="eyebrow">a little quiz, just for you</p>
